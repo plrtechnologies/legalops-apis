@@ -6,9 +6,9 @@ const pool = new Pool({
 });
 
 const createLoanProposer = async (data) => {
-    const sql = 'INSERT INTO sessions (name, relation_type, relative_name, residence_type, door_number, street_name, city_name, mandal_name, district_name, pincode) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING session_id';
+    const sql = 'INSERT INTO sessions (session_id, name, relation_type, relative_name, residence_type, door_number, street_name, city_name, mandal_name, district_name, pincode) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *';
     const result = await pool.query(sql, data);
-    return result.rows[0].session_id;
+    return result.rows[0];
 };
 
 const getLoanProposers = async () => {
