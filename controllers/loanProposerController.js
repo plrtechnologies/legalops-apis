@@ -1,7 +1,6 @@
 const loanProposerModel = require('../models/loanProposerModel');
 
 const addLoanProposer = async (req, res) => {
-
     const { session_id, name, relation_type, relative_name, residence_type, door_number, street_name, city_name, mandal_name, district_name, pincode } = req.body;
    // Check if the mandatory fields are provided
    if ( !session_id || !name || !relation_type || !relative_name || !residence_type || !city_name || !mandal_name || !district_name || !pincode) {
@@ -29,7 +28,6 @@ try {
     console.error('Error adding loan proposer:', err.stack);
     res.status(500).send('Error adding loan proposer');
 }
-
 };
 
 const retrieveLoanProposers = async (req, res) => {
@@ -42,9 +40,7 @@ const retrieveLoanProposers = async (req, res) => {
     }
 };
 
-
 module.exports = {
     addLoanProposer,
     retrieveLoanProposers,
-   
 };

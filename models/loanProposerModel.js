@@ -17,9 +17,7 @@ const getLoanProposers = async () => {
     return result.rows;
 };
 
-
 module.exports = {
     createLoanProposer,
-    getLoanProposers, 
-  
+    getLoanProposers,
 };
