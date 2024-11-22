@@ -1,26 +1,39 @@
 const loanProposerModel = require('../models/loanProposerModel');
 
 const addLoanProposer = async (req, res) => {
-    const { session_id, name, relation_type, relative_name, residence_type, door_number, street_name, city_name, mandal_name, district_name, pincode } = req.body;
+   
+    const { session_id, loanProposerName, loanProposerRelationType, loanProposerRelativeName, loanProposerResidenceType, loanProposerDoorNumber, loanProposerStreetName, loanProposerCityName, loanProposerMandalName, loanProposerDistrictName, loanProposerPincode } = req.body;
    // Check if the mandatory fields are provided
-   if ( !session_id || !name || !relation_type || !relative_name || !residence_type || !city_name || !mandal_name || !district_name || !pincode) {
-    return res.status(400).send('name,relation_type, relative_name, residence_type, city_name, mandal_name, district_name and pincode are required');
+   if ( !session_id || !loanProposerName || !loanProposerRelationType || !loanProposerRelativeName || !loanProposerResidenceType || !loanProposerCityName || !loanProposerMandalName || !loanProposerDistrictName || !loanProposerPincode) {
+    return res.status(400).send('loanProposerName, loanProposerRelationType, loanProposerRelativeName, loanProposerResidenceType, loanProposerCityName, loanProposerMandalName, loanProposerDistrictName and loanProposerPincode are required');
+}
+
+// Validate loanProposerRelationType (should be S/O, W/O, D/O, C/O or H/O)
+const validRelationTypes = ['S/O', 'W/O', 'D/O', 'C/O', 'H/O'];
+if (!validRelationTypes.includes(loanProposerRelationType)) {
+    return res.status(400).send('Invalid loanProposerRelationType. Must be S/O, W/O, D/O, C/O or H/O.');
+}
+
+// Validate loanProposerResidenceType (should be Flat or House)
+const validResidenceTypes = ['Flat', 'House'];
+if (!validResidenceTypes.includes(loanProposerResidenceType)) {
+    return res.status(400).send('Invalid loanProposerResidenceType. Must be Flat or House.');
 }
 
 try {
     // Check if name is provided, if not assign it as null or any default value
     const loanproposer = await loanProposerModel.createLoanProposer([
         session_id,
-        name, // if 'name' is not provided, it will default to null
-        relation_type,
-        relative_name,
-        residence_type,
-        door_number || null,
-        street_name || null,
-        city_name,
-        mandal_name,
-        district_name,
-        pincode
+        loanProposerName, // if 'name' is not provided, it will default to null
+        loanProposerRelationType,
+        loanProposerRelativeName,
+        loanProposerResidenceType,
+        loanProposerDoorNumber || null,
+        loanProposerStreetName || null,
+        loanProposerCityName,
+        loanProposerMandalName,
+        loanProposerDistrictName,
+        loanProposerPincode
     ]);
     
     res.send({ loanproposer, message: 'Loan proposer added successfully!' });
