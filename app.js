@@ -5,7 +5,7 @@ const path = require('path');
 const loanProposerRoutes = require('./routes/loanProposerRoutes');
 const propdetailsRoutes = require('./routes/propdetailsRoutes');
 const TtileHolderRoutes = require('./routes/TitleHolderRoutes');
-
+const PropertyBoundaryRoutes = require('./routes/PropertyBoundaryRoutes');
 
 const app = express();
 const port = 3000;
@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 app.use('/api', loanProposerRoutes);
 app.use('/api', propdetailsRoutes);
 app.use('/api',TtileHolderRoutes);
+app.use('/api',PropertyBoundaryRoutes);
 
 // Start the server
 app.listen(port, () => {
