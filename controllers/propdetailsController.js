@@ -4,10 +4,10 @@ const addPropDetail = async (req, res) => {
   
     const {"session_id": session_id,
         "propertyDoorNumber": doorno,
-        nearbyDoor,  // Checkbox for nearby door
+       "nearbyDoor": nearbyDoor,  // Checkbox for nearby door
         "propertyAssessmentNumber": assessmentno,
         "propertySurveyNumber": surveyno,
-        "ExtentOfProoperty": extentOfProp,
+        "ExtentOfProperty": extentOfProp,
         "propertyType": propType,
         "propertyNature": propNature,
     } = req.body;
@@ -34,7 +34,7 @@ const addPropDetail = async (req, res) => {
         const propdetail = await propDetailsModel.createPropDetail([
             session_id,
             doorno,
-            isNearbyDoor,  // Store the 'nearby door' status (true/false)
+            nearbyDoor,  // Store the 'nearby door' status (true/false)
             assessmentno,
             surveyno,
             extentOfProp,
