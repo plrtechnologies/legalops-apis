@@ -8,19 +8,19 @@ const pool = new Pool({
 const createPropDetail = async (data) => {
     const sql = `
         INSERT INTO sessions 
-        ("session_id", "propertyDoorNumber", "nearby door", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature") 
+        ("session_id", "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature") 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         ON CONFLICT ("session_id") 
         DO UPDATE 
         SET 
             "propertyDoorNumber" = EXCLUDED."propertyDoorNumber",
-            "nearby door" = EXCLUDED."nearby door",
+            "nearbyDoor" = EXCLUDED."nearbyDoor",
             "propertyAssessmentNumber" = EXCLUDED."propertyAssessmentNumber",
             "propertySurveyNumber" = EXCLUDED."propertySurveyNumber",
             "ExtentOfProperty" = EXCLUDED."ExtentOfProperty",
             "propertyType" = EXCLUDED."propertyType",
             "propertyNature" = EXCLUDED."propertyNature"
-        RETURNING "propertyDoorNumber", "nearby door", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature";
+        RETURNING "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature";
     `;
 
     const result = await pool.query(sql, data);
@@ -28,7 +28,7 @@ const createPropDetail = async (data) => {
 };
 
 const getPropDetails = async () => {
-    const sql = 'SELECT "propertyDoorNumber", "nearby door", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature" FROM sessions';
+    const sql = 'SELECT "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature" FROM sessions';
     const result = await pool.query(sql);
     return result.rows;
 };
