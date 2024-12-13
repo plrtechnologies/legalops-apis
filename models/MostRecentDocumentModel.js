@@ -8,8 +8,19 @@ const pool = new Pool({
 const createMostRecentDoc = async (data) => {
     const sql =  `
     INSERT INTO sessions
-    ("session_id", "selectDeedType", "dateofRegistration","documentNumber","nameofSubregistrarOffice","locationOfSubregistrarOffice","subregistrarOfficeMandal","subregistrarOfficeDistrict","subregistrarOfficeLocalAuthority") VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) 
-                    RETURNING "session_id", 
+    ("session_id", "selectDeedType", "dateofRegistration","documentNumber","nameofSubregistrarOffice","locationOfSubregistrarOffice","subregistrarOfficeMandal","subregistrarOfficeDistrict","subregistrarOfficeLocalAuthority") VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    ON CONFLICT ("session_id")
+        DO UPDATE 
+            SET 
+               "selectDeedType" = EXCLUDED."selectDeedType",
+                "dateofRegistration" = EXCLUDED."dateofRegistration",
+                "documentNumber" = EXCLUDED."documentNumber",
+                "nameofSubregistrarOffice" = EXCLUDED."nameofSubregistrarOffice",
+                "locationOfSubregistrarOffice" = EXCLUDED."locationOfSubregistrarOffice",
+                "subregistrarOfficeMandal" = EXCLUDED."subregistrarOfficeMandal",
+                "subregistrarOfficeDistrict" = EXCLUDED."subregistrarOfficeDistrict",
+                "subregistrarOfficeLocalAuthority" = EXCLUDED."subregistrarOfficeLocalAuthority"
+                 RETURNING "session_id", 
                     "selectDeedType",
                     "dateofRegistration",
                     "documentNumber",
