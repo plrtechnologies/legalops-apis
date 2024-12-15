@@ -7,8 +7,7 @@ const addPropDetail = async (req, res) => {
 
        "nearbyDoor": nearbyDoor,  // Checkbox for nearby door
 
-        nearbyDoor,// Checkbox for nearby door
-
+        
         "propertyAssessmentNumber": assessmentno,
         "propertySurveyNumber": surveyno,
         "ExtentOfProperty": extentOfProp,
