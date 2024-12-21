@@ -6,5 +6,3 @@ router.post('/MostRecent-Document', MostRecentDocumentController.addMostRecentDo
 router.get('/MostRecent-Documents', MostRecentDocumentController.retriveMostRecentDocuments);
 
 module.exports = router;
-
-
