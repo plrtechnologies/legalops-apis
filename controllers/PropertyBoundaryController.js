@@ -20,46 +20,22 @@ const addPropertyBoundary = async(req,res)=>{
             southBoundryOwner
         ]);
         
-        res.status(200).send({
-            statusCode:200,
-            data:propBoundary,
-            message:'PropertyBoundary added sucessfully'
-        });                                                    
+        res.send({propBoundary,message:'PropertyBoundary added sucessfully'});                                                    
     }
     catch(err){
         console.error('Error adding property Boundary:',err.stack);
-        res.status(500).send({
-        statusCode:500,
-        message:'Error adding Property Boundary',
-        error:err.stack
-     });
+        res.status(500).send('Error adding Property Boundary');
     }
 };
 
 const retrivePropertyBoundaries = async(req,res) => {
     try{
            const prop_Boundary = await PropertyBoundaryModel.getPropertyboundaries();
-           if(prop_Boundary.length===0){
-            return res.status(404).send({
-                statusCode:404,
-                message:'No properties found'
-            });
-        }
-    
-           res.status(200).send({
-            statusCode:200,
-            message:'Property Boundaries added successfully!',
-            data:prop_Boundary
-    });
+           res.send(prop_Boundary);
     }
     catch(err){
         console.error('Error retrieving property boundary :' , err.stack);
-        res.status(500).send({
-            statusCode:500,
-            message:'Error retrieving property Boundary',
-        error:err.stack
-    });
-
+        res.status(500).send('Error retrieving property Boundary');
     }
 };
 
@@ -67,5 +43,3 @@ module.exports = {
     addPropertyBoundary,
     retrivePropertyBoundaries,
 };
-
-
