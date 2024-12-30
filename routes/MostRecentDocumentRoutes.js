@@ -4,5 +4,4 @@ const MostRecentDocumentController = require('../controllers/MostRecentDocumentC
 
 router.post('/MostRecent-Document', MostRecentDocumentController.addMostRecentDocument);
 router.get('/MostRecent-Documents', MostRecentDocumentController.retriveMostRecentDocuments);
-
 module.exports = router;
