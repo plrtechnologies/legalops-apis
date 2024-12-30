@@ -4,6 +4,11 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swagger');
+
+
 const loanProposerRoutes = require('./routes/loanProposerRoutes');
 const propdetailsRoutes = require('./routes/propdetailsRoutes');
 const TtileHolderRoutes = require('./routes/TitleHolderRoutes');
@@ -42,7 +47,12 @@ app.use(session({
       httpOnly: true,  // Prevent client-side JS from accessing the cookie
       secure: process.env.NODE_ENV === 'production',  // Set to true in production for HTTPS
     }
-  }));
+  })
+);
+
+// Swagger UI setup
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
   
 
 // Use routes
