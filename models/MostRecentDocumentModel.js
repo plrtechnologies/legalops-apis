@@ -20,8 +20,7 @@ const createMostRecentDoc = async (data) => {
                 "subregistrarOfficeMandal" = EXCLUDED."subregistrarOfficeMandal",
                 "subregistrarOfficeDistrict" = EXCLUDED."subregistrarOfficeDistrict",
                 "subregistrarOfficeLocalAuthority" = EXCLUDED."subregistrarOfficeLocalAuthority"
-                 RETURNING "session_id", 
-                    "selectDeedType",
+                 RETURNING  "selectDeedType",
                     "dateofRegistration",
                     "documentNumber",
                     "nameofSubregistrarOffice",
@@ -45,5 +44,3 @@ createMostRecentDoc,
 getMostRecentDocs, 
   
 };
-
-

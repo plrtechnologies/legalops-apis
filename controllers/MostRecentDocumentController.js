@@ -20,11 +20,11 @@ const addMostRecentDocument = async(req,res)=>{
     try{
         const MRDocument= await MostRecentDocumentModel.createMostRecentDoc([session_id,selectDeedType, dateofRegistration, documentNumber, nameofSubregistrarOffice, locationOfSubregistrarOffice, subregistrarOfficeMandal, subregistrarOfficeDistrict, subregistrarOfficeLocalAuthority
 ]);
-        res.send({MRDocument,message:' MostRecentDocument added sucessfully'});                                                    
+        res.send({MRDocument,message:' Most Recent Document  added successfully !'});                                                    
     }
     catch(err){
-        console.error('Error adding MostRecentDocument:',err.stack);
-        res.status(500).send('Error adding MostRecentDocument');
+        console.error('Error adding Most  Recent Document:',err.stack);
+        res.status(500).send('Error adding Most Recent Document');
     }
 };
 

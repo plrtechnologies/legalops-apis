@@ -5,8 +5,8 @@ require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocs = require('./swagger');
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerDocs = require('./swagger');
 
 
 const loanProposerRoutes = require('./routes/loanProposerRoutes');
@@ -51,7 +51,7 @@ app.use(session({
 );
 
 // Swagger UI setup
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   
 
@@ -69,7 +69,7 @@ app.use('/api',EcRoutes);
 app.use('/api',HouseTaxReceiptRoutes);
 app.use('/api',HouseTaxDemandNoticeRoutes);
 app.use('/api',PropertyBoundaryRoutes);
-
+app.use('/api',MostRecentDocumentRoutes);
 app.use('/api', authRoutes);
 
 // Error handling middleware
@@ -84,7 +84,7 @@ app.use((req, res, next) => {
   });
   
 
-app.use('/api',MostRecentDocumentRoutes);
+
 
 
 
