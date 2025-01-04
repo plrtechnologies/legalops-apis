@@ -3,7 +3,8 @@
  * /property-boundary:
  *   post:
  *     summary: Add a new property boundary
- *     tags: [Property Boundary]
+ *     tags: 
+ *       - Property Boundary
  *     requestBody:
  *       required: true
  *       content:
@@ -40,15 +41,17 @@
  *     responses:
  *       200:
  *         description: Property boundary added successfully
- *      500:
- *         description:Error adding Property Boundary
+ *       500:
+ *         description: Error adding Property Boundary
  */
+
 /**
  * @swagger
  * /property-boundaries:
  *   get:
  *     summary: Retrieve all property boundaries
- *     tags: Property Boundary
+ *     tags: 
+ *       - Property Boundary
  *     responses:
  *       200:
  *         description: A list of property boundaries
