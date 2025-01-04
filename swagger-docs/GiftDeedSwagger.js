@@ -38,7 +38,7 @@
  *   get:
  *     summary: Retrieve all GiftDeeds
  *     tags:
- *       - GiftDeed
+ *       - Gift Deed
  *     responses:
  *       200:
  *         description: List of GiftDeeds.

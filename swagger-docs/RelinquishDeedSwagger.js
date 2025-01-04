@@ -38,7 +38,7 @@
  *   get:
  *     summary: Retrieve all Relinquish Deeds
  *     tags:
- *       - Relinquish Deeds
+ *       - Relinquish Deed
  *     responses:
  *       200:
  *         description: List of Relinquish Deeds.
