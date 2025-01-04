@@ -4,7 +4,7 @@
  *   post:
  *     summary: Add a new property boundary
  *     tags: 
- *          Property Boundary
+ *         - Property Boundary
  *     requestBody:
  *       required: true
  *       content:
