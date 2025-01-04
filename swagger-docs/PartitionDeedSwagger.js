@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /partition-deed:
+ * /api/partition-deed:
  *   post:
  *     summary: Add a new partitionDeed
  *     tags:
@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /partition-deeds:
+ * /api/partition-deeds:
  *   get:
  *     summary: Retrieve all partitionDeeds
  *     tags:

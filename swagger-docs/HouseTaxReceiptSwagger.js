@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /housetax-receipt:
+ * /api/housetax-receipt:
  *   post:
  *     summary: Add a new housetaxReceipt
  *     tags:
@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /housetax-receipts:
+ * /api/housetax-receipts:
  *   get:
  *     summary: Retrieve all housetaxReceipt
  *     tags:

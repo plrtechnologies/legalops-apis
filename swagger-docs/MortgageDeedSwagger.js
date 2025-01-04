@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /mortgage-deed:
+ * /api/mortgage-deed:
  *   post:
  *     summary: Add a new Mortgage Deed
  *     tags:
@@ -35,7 +35,7 @@
  */
 /**
  * @swagger
- * /mortgage-deeds:
+ * /api/mortgage-deeds:
  *   get:
  *     summary: Retrieve all Mortgage Deeds
  *     tags:

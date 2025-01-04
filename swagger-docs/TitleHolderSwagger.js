@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /title-holder:
+ * /api/title-holder:
  *   post:
  *     summary: Add a new Title Holder
  *     tags:
@@ -43,7 +43,7 @@
 
 /**
  * @swagger
- * /title-holders:
+ * /api/title-holders:
  *   get:
  *     summary: Retrieve all Title Holders
  *     tags:
@@ -57,6 +57,29 @@
  *               type: array
  *               items:
  *                 type: object
+ *                 properties:
+ *               session_id:
+ *                 type: string
+ *               TitleHolderName:
+ *                 type: string
+ *               TitleHolderRelationType:
+ *                 type: string
+ *               TitleHolderRelativeName:
+ *                 type: string
+ *               TitleHolderResidenceType:
+ *                 type: string
+ *               TitleHolderDoorNumber:
+ *                 type: string
+ *               TitleHolderStreetName:
+ *                 type: string
+ *               TitleHolderCityName:
+ *                 type: string
+ *               TitleHolderMandalName:
+ *                 type: string
+ *               TitleHolderDistrictName:
+ *                 type: string
+ *               TitleHolderPincode:
+ *                 type: string
  *       500:
  *         description: Error retrieving Title Holders.
  */

@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /housetaxdemand-notice:
+ * /api/housetaxdemand-notice:
  *   post:
  *     summary: Add a new housetaxdemandNotice
  *     tags:
@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /housetaxdemand-notices:
+ * /api/housetaxdemand-notices:
  *   get:
  *     summary: Retrieve all housetaxdemandNotice
  *     tags:

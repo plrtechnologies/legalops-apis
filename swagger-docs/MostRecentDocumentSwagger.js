@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /MostRecent-Document:
+ * /api/MostRecent-Document:
  *   post:
  *     summary: Add a new MostRecentDocument
  *     tags:
@@ -38,7 +38,7 @@
  */
 /**
  * @swagger
- * /MostRecent-Documents:
+ * /api/MostRecent-Documents:
  *   get:
  *     summary: Retrieve all MostRecentDocuments
  *     tags:

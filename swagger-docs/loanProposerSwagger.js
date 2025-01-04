@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /loan-proposer:
+ * /api/loan-proposer:
  *   post:
  *     summary: Add a new Loan Proposer
  *     tags:
@@ -42,7 +42,7 @@
  */
 /**
  * @swagger
- * /loan-proposers:
+ * /api/loan-proposers:
  *   get:
  *     summary: Retrieve all Loan Proposers
  *     tags:
@@ -56,6 +56,29 @@
  *               type: array
  *               items:
  *                 type: object
+ *                 properties:
+ *               session_id:
+ *                 type: string
+ *               loanProposerName:
+ *                 type: string
+ *               loanProposerRelationType:
+ *                 type: string
+ *               loanProposerRelativeName:
+ *                 type: string
+ *               loanProposerResidenceType:
+ *                 type: string
+ *               loanProposerDoorNumber:
+ *                 type: string
+ *               loanProposerStreetName:
+ *                 type: string
+ *               loanProposerCityName:
+ *                 type: string
+ *               loanProposerMandalName:
+ *                 type: string
+ *               loanProposerDistrictName:
+ *                 type: string
+ *               loanProposerPincode:
+ *                 type: string
  *       500:
  *         description: Error retrieving Loan Proposers.
  */

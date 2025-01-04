@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /relinquish-deed:
+ * /api/relinquish-deed:
  *   post:
  *     summary: Add a new Relinquish Deed
  *     tags:
@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /relinquish-deeds:
+ * /api/relinquish-deeds:
  *   get:
  *     summary: Retrieve all Relinquish Deeds
  *     tags:

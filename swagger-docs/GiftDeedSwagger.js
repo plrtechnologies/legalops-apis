@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /gift-deed:
+ * /api/gift-deed:
  *   post:
  *     summary: Add a new Gift Deed
  *     tags:
@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /gift-deeds:
+ * /api/gift-deeds:
  *   get:
  *     summary: Retrieve all GiftDeeds
  *     tags:
@@ -48,6 +48,21 @@
  *               type: array
  *               items:
  *                 type: object
+ *                 properties:
+ *                  session_id:
+ *                      type:string 
+ *                  DocType:
+ *                      type:string 
+ *                  DonorName:
+ *                      type:string
+ *                  DoneeName:
+ *                      type:string       
+ *                  RegistrationDate:
+ *                      type:string
+ *                  DocNumber:
+ *                      type:string
+ *                  IssuigAuthority:
+ *                      type:string
  *       500:
  *         description: Error retriving GiftDeeds.
  */

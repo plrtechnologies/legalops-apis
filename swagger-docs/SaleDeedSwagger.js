@@ -1,7 +1,7 @@
 
 /**
  * @swagger
- * /sale-deed:
+ * /api/sale-deed:
  *   post:
  *     summary: Add a new Sale Deed
  *     tags:
@@ -35,7 +35,7 @@
  */
 /**
  * @swagger
- * /sale-deeds:
+ * /api/sale-deeds:
  *   get:
  *     summary: Retrieve all Sale Deeds
  *     tags:
@@ -49,6 +49,21 @@
  *               type: array
  *               items:
  *                 type: object
+ *                 properties:
+ *                  session_id:
+ *                      type: string 
+ *                  DocType:
+ *                      type: string 
+ *                  SellerName:
+ *                      type: string
+ *                  BuyerName:
+ *                      type: string       
+ *                  RegistrationDate:
+ *                      type: string
+ *                  DocNumber:
+ *                      type: string
+ *                  IssuingAuthority:
+ *                      type: string
  *       500:
  *         description: Error retrieving Sale Deeds.
  */

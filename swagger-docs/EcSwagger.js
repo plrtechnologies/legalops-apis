@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /ec:
+ * /api/ec:
  *   post:
  *     summary: Add a new EC
  *     tags:
@@ -32,7 +32,7 @@
  */
 /**
  * @swagger
- * /ecs:
+ * /api/ecs:
  *   get:
  *     summary: Retrieve all ECs
  *     tags:
@@ -46,6 +46,19 @@
  *               type: array
  *               items:
  *                 type: object
+ *                 properties:
+ *                  session_id:
+ *                      type:string 
+ *                  DocType:
+ *                      type:string 
+ *                  EcIssuigAuthority:
+ *                      type:string
+ *                  EcStatementNumber:
+ *                      type:string       
+ *                  FromDate:
+ *                      type:string
+ *                  ToDate:
+ *                      type:string
  *       500:
  *         description: Error retriving Ec.
  */

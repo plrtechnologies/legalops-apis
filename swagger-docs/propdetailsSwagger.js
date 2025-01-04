@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /prop-detail:
+ * /api/prop-detail:
  *   post:
  *     summary: Add a new propdetail
  *     tags:
@@ -36,7 +36,7 @@
  */
 /**
  * @swagger
- * /prop-details:
+ * /api/prop-details:
  *   get:
  *     summary: Retrieve all propdetail
  *     tags:
