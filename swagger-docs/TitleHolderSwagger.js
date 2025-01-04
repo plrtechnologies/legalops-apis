@@ -50,7 +50,7 @@
  *     responses:
  *       200:
  *         description: List of Title Holders.
- *     content:
+ *         content:
  *           application/json:
  *             schema:
  *               type: array
