@@ -44,4 +44,23 @@
  *       500:
  *         description:Error adding Property Boundary
  */
+/**
+ * @swagger
+ * /property-boundaries:
+ *   get:
+ *     summary: Retrieve all property boundaries
+ *     tags: [Property Boundary]
+ *     responses:
+ *       200:
+ *         description: A list of property boundaries
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Error retrieving property boundaries
+ */
+
 module.exports=app;
