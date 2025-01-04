@@ -59,33 +59,6 @@
  *               type: array
  *               items:
  *                 type: object
- *                 properties:
- *               session_id:
- *                 type: string
- *               eastBoundrytype:
- *                 type: string
- *               eastBoundryExtent:
- *                 type: string
- *               eastBoundryOwner:
- *                 type: string
- *               westBoundrytype:
- *                 type: string
- *               westBoundryExtent:
- *                 type: string
- *               westBoundryOwner:
- *                 type: string
- *               northBoundrytype:
- *                 type: string
- *               northBoundryExtent:
- *                 type: string
- *               northBoundryOwner:
- *                 type: string
- *               southBoundrytype:
- *                 type: string
- *               southBoundryExtent:
- *                 type: string
- *               southBoundryOwner:
- *                 type: string
  *       500:
  *         description: Error retrieving property boundaries
  */
