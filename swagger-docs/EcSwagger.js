@@ -40,7 +40,7 @@
  *     responses:
  *       200:
  *         description: List of ECs.
- *     content:
+ *         content:
  *           application/json:
  *             schema:
  *               type: array
