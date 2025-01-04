@@ -52,4 +52,5 @@
  *       500:
  *         description: Error retrieving Relinquish Deeds.
  */
+
 module.exports=app;
