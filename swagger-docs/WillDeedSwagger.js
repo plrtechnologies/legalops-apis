@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /will-deed:
+ * /api/will-deed:
  *   post:
  *     summary: Add a new Will Deed
  *     tags:
@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /will-deeds:
+ * /api/will-deeds:
  *   get:
  *     summary: Retrieve all Will Deeds
  *     tags:
