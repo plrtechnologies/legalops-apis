@@ -42,6 +42,7 @@
  *     responses:
  *       200:
  *         description: List of housetaxdemandNotice
+ *         content:
  *           application/json:
  *             schema:
  *               type: array
