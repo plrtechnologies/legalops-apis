@@ -20,7 +20,7 @@ const createPropDetail = async (data) => {
             "ExtentOfProperty" = EXCLUDED."ExtentOfProperty",
             "propertyType" = EXCLUDED."propertyType",
             "propertyNature" = EXCLUDED."propertyNature"
-        RETURNING "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature";
+        RETURNING "session_id", "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature";
     `;
 
     const result = await pool.query(sql, data);
@@ -28,7 +28,7 @@ const createPropDetail = async (data) => {
 };
 
 const getPropDetails = async () => {
-    const sql = 'SELECT "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature" FROM sessions';
+    const sql = 'SELECT "session_id", "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature" FROM sessions';
     const result = await pool.query(sql);
     return result.rows;
 };
