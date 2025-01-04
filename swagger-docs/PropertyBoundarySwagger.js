@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /property-boundary:
+ * /api/property-boundary:
  *   post:
  *     summary: Add a new property boundary
  *     tags: [Property Boundary]

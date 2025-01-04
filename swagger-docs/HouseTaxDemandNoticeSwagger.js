@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /housetaxdemand-notices:
+ * /api/housetaxdemand-notices:
  *   get:
  *     summary: Retrieve all housetaxdemandNotice
  *     tags:

@@ -34,7 +34,7 @@
  */
 /**
  * @swagger
- * /gift-deeds:
+ * /api/gift-deeds:
  *   get:
  *     summary: Retrieve all GiftDeeds
  *     tags:

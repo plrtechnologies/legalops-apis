@@ -33,7 +33,7 @@
  * /
  /**
  * @swagger
- * /ecs:
+ * /api/ecs:
  *   get:
  *     summary: Retrieve all ECs
  *     tags:
