@@ -32,4 +32,23 @@
  *       500:
  *         description: Error adding Gift Deed.
  */
+/**
+ * @swagger
+ * /gift-deeds:
+ *   get:
+ *     summary: Retrieve all GiftDeeds
+ *     tags:
+ *       - GiftDeed
+ *     responses:
+ *       200:
+ *         description: List of GiftDeeds.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Error retriving GiftDeeds.
+ */
 module.exports=app;
