@@ -12,39 +12,40 @@
  *           schema:
  *             type: object  
  *             properties:
- *                  session_id:
- *                      type: string
- *                  TitleHolderName:
- *                      type: string
- *                  TitleHolderRelationType:
- *                      type: string
- *                  TitleHolderRelativeName:
- *                      type: string
- *                  TitleHolderResidenceType:
- *                      type: string
- *                  TitleHolderDoorNumber:
- *                      type: string
- *                  TitleHolderStreetName:
- *                      type: string
- *                  TitleHolderCityName:
- *                      type: string
- *                  TitleHolderMandalName:
- *                      type: string
- *                  TitleHolderDistrictName:
- *                      type: string
- *                  TitleHolderPincode:
- *                      type: string
+ *               session_id:
+ *                 type: string
+ *               TitleHolderName:
+ *                 type: string
+ *               TitleHolderRelationType:
+ *                 type: string
+ *               TitleHolderRelativeName:
+ *                 type: string
+ *               TitleHolderResidenceType:
+ *                 type: string
+ *               TitleHolderDoorNumber:
+ *                 type: string
+ *               TitleHolderStreetName:
+ *                 type: string
+ *               TitleHolderCityName:
+ *                 type: string
+ *               TitleHolderMandalName:
+ *                 type: string
+ *               TitleHolderDistrictName:
+ *                 type: string
+ *               TitleHolderPincode:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Successfully added  Title Holder.
+ *         description: Successfully added Title Holder.
  *       500:
  *         description: Error adding Title Holder.
  */
+
 /**
  * @swagger
  * /title-holders:
  *   get:
- *     summary: Retrieve all Title Holder
+ *     summary: Retrieve all Title Holders
  *     tags:
  *       - Title Holder
  *     responses:
@@ -56,7 +57,7 @@
  *               type: array
  *               items:
  *                 type: object
- *        500:
+ *       500:
  *         description: Error retrieving Title Holders.
  */
-module.exports=app;
+module.exports = app;
