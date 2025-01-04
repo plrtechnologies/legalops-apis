@@ -41,7 +41,7 @@
  *     responses:
  *       200:
  *         description: Property boundary added successfully
- *      500:
+ *       500:
  *         description:Error adding Property Boundary
  */
 module.exports=app;
