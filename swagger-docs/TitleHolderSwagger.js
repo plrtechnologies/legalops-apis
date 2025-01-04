@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /title-holders:
+ * /title-holder:
  *   post:
  *     summary: Add a new Title Holder
  *     tags:
@@ -40,6 +40,7 @@
  *       500:
  *         description: Error adding Title Holder.
  */
+
 /**
  * @swagger
  * /title-holders:
