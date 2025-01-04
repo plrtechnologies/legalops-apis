@@ -32,4 +32,24 @@
  *       500:
  *         description: Error adding Relinquish Deed.
  */
+/**
+ * @swagger
+ * /relinquish-deeds:
+ *   get:
+ *     summary: Retrieve all Relinquish Deeds
+ *     tags:
+ *       - Relinquish Deeds
+ *     responses:
+ *       200:
+ *         description: List of Relinquish Deeds.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Error retrieving Relinquish Deeds.
+ */
+
 module.exports=app;
