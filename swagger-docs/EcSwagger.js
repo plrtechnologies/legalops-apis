@@ -30,4 +30,23 @@
  *       500:
  *         description: Error adding EC.
  */
+/**
+ * @swagger
+ * /ecs:
+ *   get:
+ *     summary: Retrieve all ECs
+ *     tags:
+ *       - EC
+ *     responses:
+ *       200:
+ *         description: List of ECs.
+ *     content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Error retriving Ec.
+ */
 module.exports=app;
