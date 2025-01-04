@@ -5,8 +5,7 @@ require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 
-// const swaggerUi = require('swagger-ui-express');
-// const swaggerDocs = require('./swagger');
+const setupSwagger = require('./sweag/swagger'); // Swagger setup function
 
 
 const loanProposerRoutes = require('./routes/loanProposerRoutes');
@@ -22,12 +21,8 @@ const EcRoutes = require('./routes/EcRoutes');
 const HouseTaxReceiptRoutes = require('./routes/HouseTaxReceiptRoutes');
 const HouseTaxDemandNoticeRoutes = require('./routes/HouseTaxDemandNoticeRoutes');
 const PropertyBoundaryRoutes = require('./routes/PropertyBoundaryRoutes');
-
 const authRoutes = require('./routes/authRoutes');
-
 const MostRecentDocumentRoutes = require('./routes/MostRecentDocumentRoutes');
-
-
 
 const app = express();
 const port = 3000;
@@ -50,10 +45,8 @@ app.use(session({
   })
 );
 
-// Swagger UI setup
-//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-  
+// Setup Swagger documentation
+setupSwagger(app); // This initializes Swagger
 
 // Use routes
 app.use('/api', loanProposerRoutes);
@@ -83,12 +76,8 @@ app.use((req, res, next) => {
     res.status(500).json({ error: 'Internal Server Error' });
   });
   
-
-
-
-
-
 // Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
-});
+    console.log(`API docs available at http://localhost:${port}/api-docs`);
+  });
