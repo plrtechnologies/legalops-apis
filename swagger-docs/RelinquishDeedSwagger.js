@@ -48,8 +48,22 @@
  *               type: array
  *               items:
  *                 type: object
+ *                 properties:
+ *                  session_id:
+ *                      type: string
+ *                  DocType:
+ *                      type: string
+ *                  RelinquisherName:
+ *                      type: string
+ *                  RecipientName:
+ *                      type: string       
+ *                  RegistrationDate:
+ *                      type: string
+ *                  DocNumber:
+ *                      type: string
+ *                  IssuigAuthority:
+ *                      type: string
  *       500:
  *         description: Error retrieving Relinquish Deeds.
  */
-
 module.exports=app;
