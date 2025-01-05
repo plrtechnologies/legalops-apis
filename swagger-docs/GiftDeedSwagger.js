@@ -12,7 +12,7 @@
  *           schema:
  *             type: object  
  *             properties:
- *                  ession_id:
+ *                  session_id:
  *                      type:string 
  *                  DocType:
  *                      type:string 
