@@ -12,7 +12,7 @@
  *           schema:
  *             type: object  
  *             properties:
- *                  session_id:
+ *                  ession_id:
  *                      type:string 
  *                  DocType:
  *                      type:string 
@@ -25,7 +25,7 @@
  *                  DocNumber:
  *                      type:string
  *                  IssuigAuthority:
- *                      type:string           
+ *                      type:string          
  *     responses:
  *       200:
  *         description: Successfully added Gift Deed.
