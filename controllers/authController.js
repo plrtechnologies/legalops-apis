@@ -1,5 +1,6 @@
 
 const User = require('../models/userModel');  // Adjust if needed
+const jwt = require('jsonwebtoken');
 
 // Signup Controller
 const signup = async (req, res) => {
@@ -42,34 +43,28 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
+// Generate JWT token with user ID as payload
+const payload = { userId: user.id };
+const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });  // Token expires in 1 hour
 
-      // Store user ID in session
-      req.session.userId = user.id;
-
-      console.log('User ID stored in session:', req.session.userId); // Log the session userId
-
-
-    res.status(200).json({
-      message: 'Login successful',
-    });
-
+res.status(200).json({
+  message: 'Login successful',
+  token: token,  // Send the JWT token to the client
+});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
   }
 };
 
-// Get User Profile (session-based)
-const getUserProfile = async (req, res) => {
-  const userId = req.session.userId;
 
-  // Check if user is authenticated (i.e., has session)
-  if (!userId) {
-    return res.status(401).json({error: 'Session expired or not authenticated. Please log in again.' });
-  }
+
+// Get User Profile (with JWT)
+const getUserProfile = async (req, res) => {
+  const userId = req.user.userId;  // Get userId from the decoded token
 
   try {
-    // Fetch the user from the database by their session ID
+    // Fetch the user from the database by their userId
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -87,7 +82,6 @@ const getUserProfile = async (req, res) => {
     res.status(500).json({ error: 'Something went wrong' });
   }
 };
-
 
 
 module.exports = {
