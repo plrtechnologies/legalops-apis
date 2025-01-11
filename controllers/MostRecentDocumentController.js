@@ -20,16 +20,6 @@ const addMostRecentDocument = async (req, res) => {
             message: 'session_id, selectDeedType, dateofRegistration, documentNumber, nameofSubregistrarOffice, locationOfSubregistrarOffice, subregistrarOfficeMandal, subregistrarOfficeDistrict, and subregistrarOfficeLocalAuthority are required.'
         });
     }
-<<<<<<< HEAD
-    try{
-        const MRDocument= await MostRecentDocumentModel.createMostRecentDoc([session_id,selectDeedType, dateofRegistration, documentNumber, nameofSubregistrarOffice, locationOfSubregistrarOffice, subregistrarOfficeMandal, subregistrarOfficeDistrict, subregistrarOfficeLocalAuthority
-]);
-        res.send({MRDocument,message:' Most Recent Document  added successfully !'});                                                    
-    }
-    catch(err){
-        console.error('Error adding Most  Recent Document:',err.stack);
-        res.status(500).send('Error adding Most Recent Document');
-=======
 
     // Validate selectDeedType (should be one of the predefined types)
     const validselectDeedTypes = ["SaleDeed", "GiftDeed", "WillDeed", "RelinquishmentDeed", "MortgageDeed", "PartitionDeed"];
@@ -67,7 +57,6 @@ const addMostRecentDocument = async (req, res) => {
             message: 'Error adding MostRecentDocument',
             error: err.stack
         });
->>>>>>> 4ddd358db2e5bac803361f2e26005cb2ee1a8637
     }
 };
 
