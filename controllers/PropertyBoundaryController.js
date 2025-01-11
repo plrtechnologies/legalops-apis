@@ -99,10 +99,5 @@ const retrievePropertyBoundaries = async (req, res) => {
 
 module.exports = {
     addPropertyBoundary,
-<<<<<<< HEAD
-    retrivePropertyBoundaries,
+    retrievePropertyBoundaries,
 };
-=======
-    retrievePropertyBoundaries
-};
->>>>>>> 4ddd358db2e5bac803361f2e26005cb2ee1a8637
