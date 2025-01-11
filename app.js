@@ -7,11 +7,6 @@ require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 
-<<<<<<< HEAD
-const setupSwagger = require('./sweag/swagger'); // Swagger setup function
-
-=======
->>>>>>> 4ddd358db2e5bac803361f2e26005cb2ee1a8637
 
 const loanProposerRoutes = require('./routes/loanProposerRoutes');
 const propdetailsRoutes = require('./routes/propdetailsRoutes');
@@ -27,14 +22,15 @@ const HouseTaxReceiptRoutes = require('./routes/HouseTaxReceiptRoutes');
 const HouseTaxDemandNoticeRoutes = require('./routes/HouseTaxDemandNoticeRoutes');
 const PropertyBoundaryRoutes = require('./routes/PropertyBoundaryRoutes');
 const authRoutes = require('./routes/authRoutes');
-<<<<<<< HEAD
-=======
 const authenticate = require('./middleware/authenticate');  // JWT Authentication Middleware
->>>>>>> 4ddd358db2e5bac803361f2e26005cb2ee1a8637
 const MostRecentDocumentRoutes = require('./routes/MostRecentDocumentRoutes');
+
+
 
 const app = express();
 const port = 3000;
+
+
 // Middleware
 app.use(express.json());  // To parse JSON bodies
 app.use(express.urlencoded({ extended: true }));  // To parse URL-encoded bodies
@@ -51,11 +47,8 @@ app.use(session({
       httpOnly: true,  // Prevent client-side JS from accessing the cookie
       secure: process.env.NODE_ENV === 'production',  // Set to true in production for HTTPS
     }
-  })
-);
+  }));
 
-// Setup Swagger documentation
-setupSwagger(app); // This initializes Swagger
 
 // Public routes (No JWT authentication required)
 app.use('/api', authRoutes);  // Login/Register routes (to get JWT)
@@ -79,11 +72,7 @@ app.use('/api',HouseTaxReceiptRoutes);
 app.use('/api',HouseTaxDemandNoticeRoutes);
 app.use('/api',PropertyBoundaryRoutes);
 app.use('/api',MostRecentDocumentRoutes);
-<<<<<<< HEAD
-app.use('/api', authRoutes);
-=======
 
->>>>>>> 4ddd358db2e5bac803361f2e26005cb2ee1a8637
 
 // Error handling middleware
 app.use((req, res, next) => {
@@ -95,13 +84,9 @@ app.use((req, res, next) => {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   });
-  
-<<<<<<< HEAD
-=======
+ 
 
->>>>>>> 4ddd358db2e5bac803361f2e26005cb2ee1a8637
 // Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
-    console.log(`API docs available at http://localhost:${port}/api-docs`);
   });
