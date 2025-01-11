@@ -4,11 +4,8 @@ const addPropDetail = async (req, res) => {
   
     const {"session_id": session_id,
         "propertyDoorNumber": doorno,
-
        "nearbyDoor": nearbyDoor,  // Checkbox for nearby door
-
-        
-        "propertyAssessmentNumber": assessmentno,
+       "propertyAssessmentNumber": assessmentno,
         "propertySurveyNumber": surveyno,
         "ExtentOfProperty": extentOfProp,
         "propertyType": propType,
@@ -24,11 +21,17 @@ const addPropDetail = async (req, res) => {
     
         // Check if the provided propType and propNature are valid
         if (!validPropTypes.includes(propType)) {
-            return res.status(400).send(`Invalid property type. Valid options are: ${validPropTypes.join(", ")}`);
+            return res.status(400).send({
+                statusCode: 400,
+                message: `Invalid property type. Valid options are: ${validPropTypes.join(", ")}`
+            });
         }
         
         if (!validPropNatures.includes(propNature)) {
-            return res.status(400).send(`Invalid property nature. Valid options are: ${validPropNatures.join(", ")}`);
+            return res.status(400).send({
+                statusCode: 400,
+                message: `Invalid property nature. Valid options are: ${validPropNatures.join(", ")}`
+            });
         }
     
 
@@ -45,20 +48,51 @@ const addPropDetail = async (req, res) => {
             propNature,
         ]);
     
-    res.send({ propdetail, message: 'Property Details added successfully!' });
+      // Success response
+      res.status(200).send({
+        statusCode: 200,
+        message: 'Property Details added successfully!',
+        data: propdetail
+    });
+
 } catch (err) {
     console.error('Error adding property details:', err.stack);
-    res.status(500).send('Error adding property details');
+    // Error response with status code 500
+    res.status(500).send({
+        statusCode: 500,
+        message: 'Error adding property details',
+        error: err.stack
+    });
 }
 };
 
 const retrievePropDetails = async (req, res) => {
     try {
         const propdetails = await propDetailsModel.getPropDetails();
-        res.send(propdetails);
+
+        // If no property details found, return a 404 Not Found response
+        if (propdetails.length === 0) {
+            return res.status(404).send({
+                statusCode: 404,
+                message: 'No property details found.'
+            });
+        }
+
+        // Success response with property details
+        res.status(200).send({
+            statusCode: 200,
+            message: 'Property details retrieved successfully!',
+            data: propdetails
+        });
+
     } catch (err) {
         console.error('Error retrieving property details:', err.stack);
-        res.status(500).send('Error retrieving property details');
+        // Error response with status code 500
+        res.status(500).send({
+            statusCode: 500,
+            message: 'Error retrieving property details',
+            error: err.stack
+        });
     }
 };
 
