@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
-
+const swaggerDocument = require('./swagger.json');
 
 const loanProposerRoutes = require('./routes/loanProposerRoutes');
 const propdetailsRoutes = require('./routes/propdetailsRoutes');
@@ -29,6 +29,9 @@ const MostRecentDocumentRoutes = require('./routes/MostRecentDocumentRoutes');
 
 const app = express();
 const port = 3000;
+
+// Serve the Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 // Middleware
@@ -89,4 +92,5 @@ app.use((req, res, next) => {
 // Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
+    console.log('Swagger documentation available at http://localhost:3000/api-docs');
   });
