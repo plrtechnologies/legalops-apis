@@ -61,74 +61,129 @@
         }
       }
     }
-  }
- 
-//   "paths": {
-//   "/housetaxdemand-notice": {
-//     "post": {
-//       "summary": "Add a new housetaxdemandNotice",
-//       "tags": ["housetaxdemandNotice"],
-//       "requestBody": {
-//         "required": true,
-//         "content": {
-//           "application/json": {
-//             "schema": {
-//               "type": "object",
-//               "properties": {
-//                 "session_id": { "type": "string" },
-//                 "DocType": { "type": "string" },
-//                 "NoticeIssuigAuthority": { "type": "string" },
-//                 "DoorNumberOnReceipt": { "type": "string" },
-//                 "AssessmentNumberOnReceipt": { "type": "string" },
-//                 "AmountDue": { "type": "string" },
-//                 "AmountDueInFavourOf": { "type": "string" }
-//               }
-//             }
-//           }
-//         }
-//       },
-//       "responses": {
-//         "200": {
-//           "description": "Successfully added housetaxdemandNotice."
-//         },
-//         "500": {
-//           "description": "Error adding housetaxdemandNotice."
-//         }
-//       }
-//     }
-//   },
-//   "/housetaxdemand-notices": {
-//     "get": {
-//       "summary": "Retrieve all housetaxdemandNotice",
-//       "tags": ["housetaxdemandNotice"],
-//       "responses": {
-//         "200": {
-//           "description": "List of housetaxdemandNotice",
-//           "content": {
-//             "application/json": {
-//               "schema": {
-//                 "type": "array",
-//                 "items": {
-//                   "type": "object",
-//                   "properties": {
-//                     "session_id": { "type": "string" },
-//                     "DocType": { "type": "string" },
-//                     "NoticeIssuigAuthority": { "type": "string" },
-//                     "DoorNumberOnReceipt": { "type": "string" },
-//                     "AssessmentNumberOnReceipt": { "type": "string" },
-//                     "AmountDue": { "type": "string" },
-//                     "AmountDueInFavourOf": { "type": "string" }
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         },
-//         "500": {
-//           "description": "Error retrieving housetaxdemandNotice."
-//         }
-//       }
-//     }
-//   }
-// }
+  },
+  "/MostRecent-Document": {
+      "post": {
+        "summary": "Add a new MostRecentDocument",
+        "tags": ["MostRecentDocument"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "selectDeedType": { "type": "string" },
+                  "dateofRegistration": { "type": "string" },
+                  "documentNumber": { "type": "string" },
+                  "nameofSubregistrarOffice": { "type": "string" },
+                  "locationOfSubregistrarOffice": { "type": "string" },
+                  "subregistrarOfficeMandal": { "type": "string" },
+                  "subregistrarOfficeDistrict": { "type": "string" },
+                  "subregistrarOfficeLocalAuthority": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successfully added MostRecentDocument." },
+          "500": { "description": "Error adding MostRecentDocument." }
+        }
+      }
+    },
+    "/MostRecent-Documents": {
+      "get": {
+        "summary": "Retrieve all MostRecentDocuments",
+        "tags": ["MostRecentDocument"],
+        "responses": {
+          "200": {
+            "description": "List of MostRecentDocuments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "selectDeedType": { "type": "string" },
+                      "dateofRegistration": { "type": "string" },
+                      "documentNumber": { "type": "string" },
+                      "nameofSubregistrarOffice": { "type": "string" },
+                      "locationOfSubregistrarOffice": { "type": "string" },
+                      "subregistrarOfficeMandal": { "type": "string" },
+                      "subregistrarOfficeDistrict": { "type": "string" },
+                      "subregistrarOfficeLocalAuthority": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Error retrieving MostRecentDocuments." }
+        }
+      }
+    },
+    "/partition-deed": {
+      "post": {
+        "summary": "Add a new partitionDeed",
+        "tags": ["partitionDeed"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "DocType": { "type": "string" },
+                  "PartitionerName": { "type": "string" },
+                  "RecipientName": { "type": "string" },
+                  "RegistrationDate": { "type": "string" },
+                  "DocNumber": { "type": "string" },
+                  "IssuingAuthority": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successfully added partitionDeed." },
+          "500": { "description": "Error adding partitionDeed." }
+        }
+      }
+    },
+    "/partition-deeds": {
+      "get": {
+        "summary": "Retrieve all partitionDeeds",
+        "tags": ["partitionDeed"],
+        "responses": {
+          "200": {
+            "description": "List of partitionDeeds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "DocType": { "type": "string" },
+                      "PartitionerName": { "type": "string" },
+                      "RecipientName": { "type": "string" },
+                      "RegistrationDate": { "type": "string" },
+                      "DocNumber": { "type": "string" },
+                      "IssuingAuthority": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Error retrieving partitionDeeds." }
+        }
+      }
+    }
   
