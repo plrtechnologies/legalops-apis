@@ -1,68 +1,68 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "API Documentation",
-      "version": "1.0.0",
-      "description": "Swagger documentation for all APIs"
-    },
-    "servers": [
-      {
-        "url": "http://localhost:3000",
-        "description": "Local server"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Documentation",
+    "version": "1.0.0",
+    "description": "Swagger documentation for all APIs"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "tags": [
+    { "name": "Gift Deed", "description": "APIs for Gift Deed" },
+    { "name": "MostRecentDocument", "description": "APIs for MostRecent Documents" },
+    { "name": "partitionDeed", "description": "APIs for Partition Deeds" }
+  ],
+  "paths": {
+    "/gift-deed": {
+      "post": {
+        "summary": "Add a new Gift Deed",
+        "tags": ["Gift Deed"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "giftDeedOwner": { "type": "string" },
+                  "giftDeedReceiver": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Gift Deed added successfully" },
+          "500": { "description": "Error adding Gift Deed" }
+        }
       }
-    ],
-    "tags": [
-      { "name": "Gift Deed", "description": "APIs for Gift Deed" }
-    ],
-    "paths": {
-      "/gift-deed": {
-        "post": {
-          "summary": "Add a new Gift Deed",
-          "tags": ["Gift Deed"],
-          "requestBody": {
-            "required": true,
+    },
+    "/gift-deeds": {
+      "get": {
+        "summary": "Retrieve all Gift Deeds",
+        "tags": ["Gift Deed"],
+        "responses": {
+          "200": {
+            "description": "A list of Gift Deeds",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "session_id": { "type": "string" },
-                    "giftDeedOwner": { "type": "string" },
-                    "giftDeedReceiver": { "type": "string" }
-                  }
+                  "type": "array",
+                  "items": { "type": "object" }
                 }
               }
             }
           },
-          "responses": {
-            "200": { "description": "Gift Deed added successfully" },
-            "500": { "description": "Error adding Gift Deed" }
-          }
-        }
-      },
-      "/gift-deeds": {
-        "get": {
-          "summary": "Retrieve all Gift Deeds",
-          "tags": ["Gift Deed"],
-          "responses": {
-            "200": {
-              "description": "A list of Gift Deeds",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": { "type": "object" }
-                  }
-                }
-              }
-            },
-            "500": { "description": "Error retrieving Gift Deeds" }
-          }
+          "500": { "description": "Error retrieving Gift Deeds" }
         }
       }
-    }
-  },
-  "/MostRecent-Document": {
+    },
+    "/MostRecent-Document": {
       "post": {
         "summary": "Add a new MostRecentDocument",
         "tags": ["MostRecentDocument"],
@@ -186,4 +186,5 @@
         }
       }
     }
-  
+  }
+}
