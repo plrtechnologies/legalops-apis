@@ -11,77 +11,72 @@
       "description": "Local server"
     }
   ],
-  "tags": [
-    { "name": "Gift Deed", "description": "APIs for Gift Deed" },
-    { "name": "MostRecentDocument", "description": "APIs for MostRecent Documents" },
-    { "name": "partitionDeed", "description": "APIs for Partition Deeds" }
-  ],
+    "tags": [
+      { "name": "Gift Deed", "description": "APIs for Gift Deed" },
+      { "name": "MostRecentDocument", "description": "APIs for Most Recent Documents" },
+      { "name": "partitionDeed", "description": "APIs for Partition Deed" }
+    ],
   "paths": {
-    "/gift-deed": { 
-      "post": { 
-        "summary": "Add a new Gift Deed", 
-        "tags": ["Gift Deed"], 
-        "requestBody": { 
-          "required": true, 
-          "content": { 
-            "application/json": { 
-              "schema": { 
-                "type": "object", 
-                "properties": { 
-                  "session_id": { "type": "string" }, 
-                  "DocType": { "type": "string" }, 
-                  "DonorName": { "type": "string" }, 
-                  "DoneeName": { "type": "string" }, 
-                  "RegistrationDate": { "type": "string" }, 
-                  "DocNumber": { "type": "string" }, 
-                  "IssuingAuthority": { 
-                    "type": "string" 
+    "/gift-deed": {
+      "post": {
+        "summary": "Add a new Gift Deed",
+        "tags": ["Gift Deed"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "DocType": { "type": "string" },
+                  "DonorName": { "type": "string" },
+                  "DoneeName": { "type": "string" },
+                  "RegistrationDate": { "type": "string" },
+                  "DocNumber": { "type": "string" },
+                  "IssuingAuthority": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successfully added Gift Deed." },
+          "500": { "description": "Error adding Gift Deed." }
+        }
+      }
+    },
+    "/gift-deeds": {
+      "get": {
+        "summary": "Retrieve all Gift Deeds",
+        "tags": ["Gift Deed"],
+        "responses": {
+          "200": {
+            "description": "List of Gift Deeds.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "DocType": { "type": "string" },
+                      "DonorName": { "type": "string" },
+                      "DoneeName": { "type": "string" },
+                      "RegistrationDate": { "type": "string" },
+                      "DocNumber": { "type": "string" },
+                      "IssuingAuthority": { "type": "string" }
                     }
                   }
                 }
-               }
               }
-             }, 
-             "responses": { 
-              "200": { 
-                "description": "Successfully added Gift Deed." }, 
-                "500": { "description": "Error adding Gift Deed." } 
-                }
-               }
-             }, 
-             "/gift-deeds": { 
-              "get": { 
-                "summary": "Retrieve all Gift Deeds", 
-                "tags": ["Gift Deed"], 
-                "responses": { 
-                  "200": { "description": "List of Gift Deeds.", 
-                  "content": { 
-                    "application/json": { 
-                      "schema": { 
-                        "type": "array", 
-                        "items": { 
-                          "type": "object", 
-                          "properties": { 
-                            "session_id": { 
-                              "type": "string" }, 
-                              "DocType": { "type": "string" }, 
-                              "DonorName": { "type": "string" }, 
-                              "DoneeName": { "type": "string" }, 
-                              "RegistrationDate": { "type": "string" }, 
-                              "DocNumber": { "type": "string" }, 
-                              "IssuingAuthority": { "type": "string" } 
-                              } 
-                            }
-                           }
-                         }
-                       }
-                     }, 
-                     "500": { "description": "Error retrieving Gift Deeds." } 
-                     }
-                   }
-                 }
-               }
-             },
+            }
+          },
+          "500": { "description": "Error retrieving Gift Deeds." }
+        }
+      }
+    },
     "/MostRecent-Document": {
       "post": {
         "summary": "Add a new MostRecentDocument",
