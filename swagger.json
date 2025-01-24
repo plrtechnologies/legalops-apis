@@ -17,7 +17,7 @@
       { "name": "partitionDeed", "description": "APIs for Partition Deed" }
     ],
   "paths": {
-    "/gift-deed": {
+    "/api/gift-deed": {
       "post": {
         "summary": "Add a new Gift Deed",
         "tags": ["Gift Deed"],
@@ -46,7 +46,7 @@
         }
       }
     },
-    "/gift-deeds": {
+    "/api/gift-deeds": {
       "get": {
         "summary": "Retrieve all Gift Deeds",
         "tags": ["Gift Deed"],
@@ -77,7 +77,7 @@
         }
       }
     },
-    "/MostRecent-Document": {
+    "/api/MostRecent-Document": {
       "post": {
         "summary": "Add a new MostRecentDocument",
         "tags": ["MostRecentDocument"],
@@ -108,7 +108,7 @@
         }
       }
     },
-    "/MostRecent-Documents": {
+    "/api/MostRecent-Documents": {
       "get": {
         "summary": "Retrieve all MostRecentDocuments",
         "tags": ["MostRecentDocument"],
@@ -141,7 +141,7 @@
         }
       }
     },
-    "/partition-deed": {
+    "/api/partition-deed": {
       "post": {
         "summary": "Add a new partitionDeed",
         "tags": ["partitionDeed"],
@@ -170,7 +170,7 @@
         }
       }
     },
-    "/partition-deeds": {
+    "/api/partition-deeds": {
       "get": {
         "summary": "Retrieve all partitionDeeds",
         "tags": ["partitionDeed"],
