@@ -48,6 +48,15 @@ app.use(session({
       secure: process.env.NODE_ENV === 'production',  // Set to true in production for HTTPS
     }
   }));
+
+  const swaggerOptions = {
+    definition: require('./swagger.json'), // Load your Swagger JSON file
+    apis: ['./routes/*.js'], // Path where API routes are defined
+};
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
   
 
 // Public routes (No JWT authentication required)
