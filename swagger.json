@@ -1,0 +1,932 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API Documentation",
+      "version": "1.0.0",
+      "description": "Swagger documentation for all APIs"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Local server"
+      }
+    ],
+      "tags": [
+        { "name": "Gift Deed", "description": "APIs for Gift Deed" },
+        { "name": "MostRecentDocument", "description": "APIs for Most Recent Documents" },
+        { "name": "partitionDeed", "description": "APIs for Partition Deed" }
+      ],
+    "paths": {
+      "/api/gift-deed": {
+        "post": {
+          "summary": "Add a new Gift Deed",
+          "tags": ["Gift Deed"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "DocType": { "type": "string" },
+                    "DonorName": { "type": "string" },
+                    "DoneeName": { "type": "string" },
+                    "RegistrationDate": { "type": "string" },
+                    "DocNumber": { "type": "string" },
+                    "IssuingAuthority": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added Gift Deed." },
+            "500": { "description": "Error adding Gift Deed." }
+          }
+        }
+      },
+      "/api/gift-deeds": {
+        "get": {
+          "summary": "Retrieve all Gift Deeds",
+          "tags": ["Gift Deed"],
+          "responses": {
+            "200": {
+              "description": "List of Gift Deeds.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "DocType": { "type": "string" },
+                        "DonorName": { "type": "string" },
+                        "DoneeName": { "type": "string" },
+                        "RegistrationDate": { "type": "string" },
+                        "DocNumber": { "type": "string" },
+                        "IssuingAuthority": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving Gift Deeds." }
+          }
+        }
+      },
+      "/api/MostRecent-Document": {
+        "post": {
+          "summary": "Add a new MostRecentDocument",
+          "tags": ["MostRecentDocument"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "selectDeedType": { "type": "string" },
+                    "dateofRegistration": { "type": "string" },
+                    "documentNumber": { "type": "string" },
+                    "nameofSubregistrarOffice": { "type": "string" },
+                    "locationOfSubregistrarOffice": { "type": "string" },
+                    "subregistrarOfficeMandal": { "type": "string" },
+                    "subregistrarOfficeDistrict": { "type": "string" },
+                    "subregistrarOfficeLocalAuthority": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added MostRecentDocument." },
+            "500": { "description": "Error adding MostRecentDocument." }
+          }
+        }
+      },
+      "/api/MostRecent-Documents": {
+        "get": {
+          "summary": "Retrieve all MostRecentDocuments",
+          "tags": ["MostRecentDocument"],
+          "responses": {
+            "200": {
+              "description": "List of MostRecentDocuments",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "selectDeedType": { "type": "string" },
+                        "dateofRegistration": { "type": "string" },
+                        "documentNumber": { "type": "string" },
+                        "nameofSubregistrarOffice": { "type": "string" },
+                        "locationOfSubregistrarOffice": { "type": "string" },
+                        "subregistrarOfficeMandal": { "type": "string" },
+                        "subregistrarOfficeDistrict": { "type": "string" },
+                        "subregistrarOfficeLocalAuthority": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving MostRecentDocuments." }
+          }
+        }
+      },
+      "/api/partition-deed": {
+        "post": {
+          "summary": "Add a new partitionDeed",
+          "tags": ["partitionDeed"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "DocType": { "type": "string" },
+                    "PartitionerName": { "type": "string" },
+                    "RecipientName": { "type": "string" },
+                    "RegistrationDate": { "type": "string" },
+                    "DocNumber": { "type": "string" },
+                    "IssuingAuthority": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added partitionDeed." },
+            "500": { "description": "Error adding partitionDeed." }
+          }
+        }
+      },
+      "/api/partition-deeds": {
+        "get": {
+          "summary": "Retrieve all partitionDeeds",
+          "tags": ["partitionDeed"],
+          "responses": {
+            "200": {
+              "description": "List of partitionDeeds",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "DocType": { "type": "string" },
+                        "PartitionerName": { "type": "string" },
+                        "RecipientName": { "type": "string" },
+                        "RegistrationDate": { "type": "string" },
+                        "DocNumber": { "type": "string" },
+                        "IssuingAuthority": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving partitionDeeds." }
+          }
+        }
+      },
+      "/api/housetaxdemand-notice": {
+        "post": {
+          "summary": "Add a new housetaxdemandNotice",
+          "tags": ["housetaxdemandNotice"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "DocType": { "type": "string" },
+                    "NoticeIssuingAuthority": { "type": "string" },
+                    "DoorNumberOnReceipt": { "type": "string" },
+                    "AssessmentNumberOnReceipt": { "type": "string" },
+                    "AmountDue": { "type": "string" },
+                    "AmountDueInFavourOf": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added housetaxdemandNotice." },
+            "500": { "description": "Error adding housetaxdemandNotice." }
+          }
+        }
+      },
+      "/api/housetaxdemand-notices": {
+        "get": {
+          "summary": "Retrieve all housetaxdemandNotices",
+          "tags": ["housetaxdemandNotice"],
+          "responses": {
+            "200": {
+              "description": "List of housetaxdemandNotices",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "DocType": { "type": "string" },
+                        "NoticeIssuingAuthority": { "type": "string" },
+                        "DoorNumberOnReceipt": { "type": "string" },
+                        "AssessmentNumberOnReceipt": { "type": "string" },
+                        "AmountDue": { "type": "string" },
+                        "AmountDueInFavourOf": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving housetaxdemandNotices." }
+          }
+        }
+      },
+      "/api/housetax-receipt": {
+        "post": {
+          "summary": "Add a new housetaxReceipt",
+          "tags": ["housetaxReceipt"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "DocType": { "type": "string" },
+                    "ReceiptIssuingAuthority": { "type": "string" },
+                    "DoorNumberOnReceipt": { "type": "string" },
+                    "AssessmentNumberOnReceipt": { "type": "string" },
+                    "AmountPaid": { "type": "string" },
+                    "AmountPaidInFavourOf": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added housetaxReceipt." },
+            "500": { "description": "Error adding housetaxReceipt." }
+          }
+        }
+      },
+      "/api/housetax-receipts": {
+        "get": {
+          "summary": "Retrieve all housetaxReceipts",
+          "tags": ["housetaxReceipt"],
+          "responses": {
+            "200": {
+              "description": "List of housetaxReceipts.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "DocType": { "type": "string" },
+                        "ReceiptIssuingAuthority": { "type": "string" },
+                        "DoorNumberOnReceipt": { "type": "string" },
+                        "AssessmentNumberOnReceipt": { "type": "string" },
+                        "AmountPaid": { "type": "string" },
+                        "AmountPaidInFavourOf": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving housetaxReceipts." }
+          }
+        }
+      },
+      "/api/loan-proposer": {
+        "post": {
+          "summary": "Add a new Loan Proposer",
+          "tags": ["Loan Proposer"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "loanProposerName": { "type": "string" },
+                    "loanProposerRelationType": { "type": "string" },
+                    "loanProposerRelativeName": { "type": "string" },
+                    "loanProposerResidenceType": { "type": "string" },
+                    "loanProposerDoorNumber": { "type": "string" },
+                    "loanProposerStreetName": { "type": "string" },
+                    "loanProposerCityName": { "type": "string" },
+                    "loanProposerMandalName": { "type": "string" },
+                    "loanProposerDistrictName": { "type": "string" },
+                    "loanProposerPincode": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added Loan Proposer." },
+            "500": { "description": "Error adding Loan Proposer." }
+          }
+        }
+      },
+      "/api/loan-proposers": {
+        "get": {
+          "summary": "Retrieve all Loan Proposers",
+          "tags": ["Loan Proposer"],
+          "responses": {
+            "200": {
+              "description": "List of Loan Proposers.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "loanProposerName": { "type": "string" },
+                        "loanProposerRelationType": { "type": "string" },
+                        "loanProposerRelativeName": { "type": "string" },
+                        "loanProposerResidenceType": { "type": "string" },
+                        "loanProposerDoorNumber": { "type": "string" },
+                        "loanProposerStreetName": { "type": "string" },
+                        "loanProposerCityName": { "type": "string" },
+                        "loanProposerMandalName": { "type": "string" },
+                        "loanProposerDistrictName": { "type": "string" },
+                        "loanProposerPincode": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving Loan Proposers." }
+          }
+        }
+      },
+      "/api/mortgage-deed": {
+        "post": {
+          "summary": "Add a new Mortgage Deed",
+          "tags": ["Mortgage Deed"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "DocType": { "type": "string" },
+                    "MortgagorName": { "type": "string" },
+                    "MortgageeName": { "type": "string" },
+                    "RegistrationDate": { "type": "string", "format": "date" },
+                    "DocNumber": { "type": "string" },
+                    "IssuingAuthority": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added Mortgage Deed." },
+            "500": { "description": "Error adding Mortgage Deed." }
+          }
+        }
+      },
+      "/api/mortgage-deeds": {
+        "get": {
+          "summary": "Retrieve all Mortgage Deeds",
+          "tags": ["Mortgage Deed"],
+          "responses": {
+            "200": {
+              "description": "List of Mortgage Deeds.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "DocType": { "type": "string" },
+                        "MortgagorName": { "type": "string" },
+                        "MortgageeName": { "type": "string" },
+                        "RegistrationDate": { "type": "string", "format": "date" },
+                        "DocNumber": { "type": "string" },
+                        "IssuingAuthority": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving Mortgage Deeds." }
+          }
+        }
+      },
+      "/api/prop-detail": {
+        "post": {
+          "summary": "Add a new propdetail",
+          "tags": ["propdetail"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "session_id": { "type": "string" },
+                    "propertyDoorNumber": { "type": "string" },
+                    "nearbyDoor": { "type": "string" },
+                    "propertyAssessmentNumber": { "type": "string" },
+                    "propertySurveyNumber": { "type": "string" },
+                    "ExtentOfProperty": { "type": "string" },
+                    "propertyType": { "type": "string" },
+                    "propertyNature": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": { "description": "Successfully added propdetail." },
+            "500": { "description": "Error adding propdetail." }
+          }
+        }
+      },
+      "/api/prop-details": {
+        "get": {
+          "summary": "Retrieve all propdetails",
+          "tags": ["propdetail"],
+          "responses": {
+            "200": {
+              "description": "List of propdetails.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "session_id": { "type": "string" },
+                        "propertyDoorNumber": { "type": "string" },
+                        "nearbyDoor": { "type": "string" },
+                        "propertyAssessmentNumber": { "type": "string" },
+                        "propertySurveyNumber": { "type": "string" },
+                        "ExtentOfProperty": { "type": "string" },
+                        "propertyType": { "type": "string" },
+                        "propertyNature": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": { "description": "Error retrieving propdetails." }
+          }
+        }
+      },
+      "/api/property-boundary": {
+      "post": {
+        "summary": "Add a new property boundary",
+        "tags": ["Property Boundary"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "eastBoundrytype": { "type": "string" },
+                  "eastBoundryExtent": { "type": "string" },
+                  "eastBoundryOwner": { "type": "string" },
+                  "westBoundrytype": { "type": "string" },
+                  "westBoundryExtent": { "type": "string" },
+                  "westBoundryOwner": { "type": "string" },
+                  "northBoundrytype": { "type": "string" },
+                  "northBoundryExtent": { "type": "string" },
+                  "northBoundryOwner": { "type": "string" },
+                  "southBoundrytype": { "type": "string" },
+                  "southBoundryExtent": { "type": "string" },
+                  "southBoundryOwner": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Property boundary added successfully"
+          },
+          "500": {
+            "description": "Error adding Property Boundary"
+          }
+        }
+      }
+    },
+    "/api/property-boundaries": {
+      "get": {
+        "summary": "Retrieve all property boundaries",
+        "tags": ["Property Boundary"],
+        "responses": {
+          "200": {
+            "description": "A list of property boundaries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "eastBoundrytype": { "type": "string" },
+                      "eastBoundryExtent": { "type": "string" },
+                      "eastBoundryOwner": { "type": "string" },
+                      "westBoundrytype": { "type": "string" },
+                      "westBoundryExtent": { "type": "string" },
+                      "westBoundryOwner": { "type": "string" },
+                      "northBoundrytype": { "type": "string" },
+                      "northBoundryExtent": { "type": "string" },
+                      "northBoundryOwner": { "type": "string" },
+                      "southBoundrytype": { "type": "string" },
+                      "southBoundryExtent": { "type": "string" },
+                      "southBoundryOwner": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving property boundaries"
+          }
+        }
+      }
+    },
+    "/api/relinquish-deed": {
+      "post": {
+        "summary": "Add a new Relinquish Deed",
+        "tags": ["Relinquish Deed"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "DocType": { "type": "string" },
+                  "RelinquisherName": { "type": "string" },
+                  "RecipientName": { "type": "string" },
+                  "RegistrationDate": { "type": "string" },
+                  "DocNumber": { "type": "string" },
+                  "IssuigAuthority": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added Relinquish Deed."
+          },
+          "500": {
+            "description": "Error adding Relinquish Deed."
+          }
+        }
+      }
+    },
+    "/api/relinquish-deeds": {
+      "get": {
+        "summary": "Retrieve all Relinquish Deeds",
+        "tags": ["Relinquish Deed"],
+        "responses": {
+          "200": {
+            "description": "List of Relinquish Deeds.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "DocType": { "type": "string" },
+                      "RelinquisherName": { "type": "string" },
+                      "RecipientName": { "type": "string" },
+                      "RegistrationDate": { "type": "string" },
+                      "DocNumber": { "type": "string" },
+                      "IssuigAuthority": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving Relinquish Deeds."
+          }
+        }
+      }
+    },
+    "/api/sale-deed": {
+      "post": {
+        "summary": "Add a new Sale Deed",
+        "tags": ["Sale Deed"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "DocType": { "type": "string" },
+                  "SellerName": { "type": "string" },
+                  "BuyerName": { "type": "string" },
+                  "RegistrationDate": { "type": "string" },
+                  "DocNumber": { "type": "string" },
+                  "IssuingAuthority": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added Sale Deed."
+          },
+          "500": {
+            "description": "Error adding Sale Deed."
+          }
+        }
+      }
+    },
+    "/api/sale-deeds": {
+      "get": {
+        "summary": "Retrieve all Sale Deeds",
+        "tags": ["Sale Deed"],
+        "responses": {
+          "200": {
+            "description": "List of Sale Deeds.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "DocType": { "type": "string" },
+                      "SellerName": { "type": "string" },
+                      "BuyerName": { "type": "string" },
+                      "RegistrationDate": { "type": "string" },
+                      "DocNumber": { "type": "string" },
+                      "IssuingAuthority": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving Sale Deeds."
+          }
+        }
+      }
+    },
+    "/api/title-holder": {
+      "post": {
+        "summary": "Add a new Title Holder",
+        "tags": ["Title Holder"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "TitleHolderName": { "type": "string" },
+                  "TitleHolderRelationType": { "type": "string" },
+                  "TitleHolderRelativeName": { "type": "string" },
+                  "TitleHolderResidenceType": { "type": "string" },
+                  "TitleHolderDoorNumber": { "type": "string" },
+                  "TitleHolderStreetName": { "type": "string" },
+                  "TitleHolderCityName": { "type": "string" },
+                  "TitleHolderMandalName": { "type": "string" },
+                  "TitleHolderDistrictName": { "type": "string" },
+                  "TitleHolderPincode": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added Title Holder."
+          },
+          "500": {
+            "description": "Error adding Title Holder."
+          }
+        }
+      }
+    },
+    "/api/title-holders": {
+      "get": {
+        "summary": "Retrieve all Title Holders",
+        "tags": ["Title Holder"],
+        "responses": {
+          "200": {
+            "description": "List of Title Holders.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "TitleHolderName": { "type": "string" },
+                      "TitleHolderRelationType": { "type": "string" },
+                      "TitleHolderRelativeName": { "type": "string" },
+                      "TitleHolderResidenceType": { "type": "string" },
+                      "TitleHolderDoorNumber": { "type": "string" },
+                      "TitleHolderStreetName": { "type": "string" },
+                      "TitleHolderCityName": { "type": "string" },
+                      "TitleHolderMandalName": { "type": "string" },
+                      "TitleHolderDistrictName": { "type": "string" },
+                      "TitleHolderPincode": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving Title Holders."
+          }
+        }
+      }
+    },
+    "/api/will-deed": {
+      "post": {
+        "summary": "Add a new Will Deed",
+        "tags": ["Will Deed"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "DocType": { "type": "string" },
+                  "TestatorName": { "type": "string" },
+                  "BeneficiaryName": { "type": "string" },
+                  "RegistrationDate": { "type": "string" },
+                  "DocNumber": { "type": "string" },
+                  "IssuigAuthority": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added Will Deed."
+          },
+          "500": {
+            "description": "Error adding Will Deed."
+          }
+        }
+      }
+    },
+    "/api/will-deeds": {
+      "get": {
+        "summary": "Retrieve all Will Deeds",
+        "tags": ["Will Deed"],
+        "responses": {
+          "200": {
+            "description": "List of Will Deeds.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "DocType": { "type": "string" },
+                      "TestatorName": { "type": "string" },
+                      "BeneficiaryName": { "type": "string" },
+                      "RegistrationDate": { "type": "string" },
+                      "DocNumber": { "type": "string" },
+                      "IssuigAuthority": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving Will Deeds."
+          }
+        }
+      }
+    },
+    "/api/ec": {
+      "post": {
+        "summary": "Add a new EC",
+        "tags": ["EC"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": { "type": "string" },
+                  "DocType": { "type": "string" },
+                  "EcIssuigAuthority": { "type": "string" },
+                  "EcStatementNumber": { "type": "string" },
+                  "FromDate": { "type": "string" },
+                  "ToDate": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added EC."
+          },
+          "500": {
+            "description": "Error adding EC."
+          }
+        }
+      }
+    },
+    "/api/ecs": {
+      "get": {
+        "summary": "Retrieve all ECs",
+        "tags": ["EC"],
+        "responses": {
+          "200": {
+            "description": "List of ECs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "session_id": { "type": "string" },
+                      "DocType": { "type": "string" },
+                      "EcIssuigAuthority": { "type": "string" },
+                      "EcStatementNumber": { "type": "string" },
+                      "FromDate": { "type": "string" },
+                      "ToDate": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error retrieving ECs."
+          }
+        }
+      }
+    }
+  }
+  }
+  
+  
+  
