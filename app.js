@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
-
+const swaggerDocument = require('./swagger.json');
 
 const loanProposerRoutes = require('./routes/loanProposerRoutes');
 const propdetailsRoutes = require('./routes/propdetailsRoutes');
@@ -30,6 +30,9 @@ const MostRecentDocumentRoutes = require('./routes/MostRecentDocumentRoutes');
 const app = express();
 const port = 3000;
 
+// Serve the Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // Middleware
 app.use(express.json());  // To parse JSON bodies
@@ -49,15 +52,6 @@ app.use(session({
     }
   }));
 
-  const swaggerOptions = {
-    definition: require('./swagger.json'), // Load your Swagger JSON file
-    apis: ['./routes/*.js'], // Path where API routes are defined
-};
-
-const swaggerDocs = swaggerJSDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-  
 
 // Public routes (No JWT authentication required)
 app.use('/api', authRoutes);  // Login/Register routes (to get JWT)
@@ -93,11 +87,10 @@ app.use((req, res, next) => {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   });
-  
+ 
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
-});
-
-
+    console.log('Swagger documentation available at http://localhost:3000/api-docs');
+  });
