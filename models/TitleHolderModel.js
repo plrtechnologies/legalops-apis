@@ -6,17 +6,55 @@ const pool = new Pool({
 });
 
 const createTitleHolder = async (data) => {
-    const sql = 'INSERT INTO titleholderdetails ( session_id, TitleHolderName, TitleHolderRelationType, TitleHolderRelativeName, TitleHolderResidenceType, TitleHolderDoorNumber, TitleHolderStreetName, TitleHolderCityName, TitleHolderMandalName, TitleHolderDistrictName, TitleHolderPincode) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11) RETURNING *';
-    const result = await pool.query(sql, data);
+    const {
+        session_id, TitleHolderName, TitleHolderRelationType, TitleHolderRelativeName, TitleHolderResidenceType, TitleHolderDoorNumber, TitleHolderStreetName, TitleHolderCityName, TitleHolderMandalName, TitleHolderDistrictName, TitleHolderPincode
+    } = data;
+    const sql = `
+    INSERT INTO titleholderdetails ( session_id, TitleHolderName, TitleHolderRelationType, TitleHolderRelativeName, TitleHolderResidenceType, TitleHolderDoorNumber, TitleHolderStreetName, TitleHolderCityName, TitleHolderMandalName, TitleHolderDistrictName, TitleHolderPincode) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11)
+    ON CONFLICT ("session_id") 
+        DO UPDATE 
+        SET 
+            TitleHolderName = EXCLUDED.TitleHolderName,
+            TitleHolderRelationType = EXCLUDED.TitleHolderRelationType,
+            TitleHolderRelativeName = EXCLUDED.TitleHolderRelativeName,
+            TitleHolderResidenceType = EXCLUDED.TitleHolderResidenceType,
+            TitleHolderDoorNumber= EXCLUDED.TitleHolderDoorNumber,
+            TitleHolderStreetName = EXCLUDED.TitleHolderStreetName,
+            TitleHolderCityName = EXCLUDED.TitleHolderCityName,
+            TitleHolderMandalName = EXCLUDED.TitleHolderMandalName,
+            TitleHolderDistrictName = EXCLUDED.TitleHolderDistrictName,
+            TitleHolderPincode = EXCLUDED.TitleHolderPincode
+    
+        RETURNING  session_id, TitleHolderName , TitleHolderRelationType, TitleHolderRelativeName, TitleHolderResidenceType,TitleHolderDoorNumber, TitleHolderStreetName, TitleHolderCityName, TitleHolderMandalName, TitleHolderDistrictName, TitleHolderPincode;
+    `;
+    const values = [session_id, TitleHolderName, TitleHolderRelationType, TitleHolderRelativeName, TitleHolderResidenceType, TitleHolderDoorNumber, TitleHolderStreetName, TitleHolderCityName, TitleHolderMandalName, TitleHolderDistrictName, TitleHolderPincode];
+    const result = await pool.query(sql, values);
     return result.rows[0];
 };
 
 
-const getTitleHolder = async () => {
-    const sql = 'SELECT TitleHolderName, TitleHolderRelationType, TitleHolderRelativeName, TitleHolderResidenceType, TitleHolderDoorNumber, TitleHolderStreetName, TitleHolderCityName, TitleHolderMandalName, TitleHolderDistrictName, TitleHolderPincode FROM titleholderdetails';
-    const result = await pool.query(sql);
-    return result.rows;
+const getTitleHolder = async (session_id) => {
+    try {
+        // SQL query to fetch loan proposers for a specific session_id
+        const sql = `
+            SELECT * FROM sessions 
+            WHERE "session_id" = $1;
+        `;
+        const values = [session_id];
+        
+        const result = await pool.query(sql, values);
+        
+        // Return the results if any rows are found
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            return [];  
+        }
+    } catch (err) {
+        console.error('Error fetching TitleHolder:', err);
+        throw err;
+    }
 };
-
 
 module.exports = { createTitleHolder,getTitleHolder};

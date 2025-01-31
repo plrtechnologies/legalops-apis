@@ -6,10 +6,17 @@ const pool = new Pool({
 });
 
 const createPropDetail = async (data) => {
+
+    // Destructure the fields from the data object to ensure they are in the correct order
+    const {
+        session_id, propertyDoorNumber, nearbyDoor, propertyAssessmentNumber, propertySurveyNumber,
+        ExtentOfProperty, propertyType, propertyNature
+    } = data;
+
     const sql = `
         INSERT INTO sessions 
         ("session_id", "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature") 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8,)
         ON CONFLICT ("session_id") 
         DO UPDATE 
         SET 
@@ -23,14 +30,37 @@ const createPropDetail = async (data) => {
         RETURNING "session_id", "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature";
     `;
 
-    const result = await pool.query(sql, data);
+    // Pass data as an array
+    const values = [
+        session_id, propertyDoorNumber, nearbyDoor, propertyAssessmentNumber, propertySurveyNumber,
+        ExtentOfProperty, propertyType, propertyNature
+    ];
+    
+    const result = await pool.query(sql, values);
     return result.rows[0];
 };
 
-const getPropDetails = async () => {
-    const sql = 'SELECT "session_id", "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature" FROM sessions';
-    const result = await pool.query(sql);
-    return result.rows;
+const getPropDetails = async (session_id) => {
+    try {
+        // SQL query to fetch loan proposers for a specific session_id
+        const sql = `
+            SELECT * FROM sessions 
+            WHERE "session_id" = $1;
+        `;
+        const values = [session_id];
+        
+        const result = await pool.query(sql, values);
+        
+        // Return the results if any rows are found
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            return [];  
+        }
+    } catch (err) {
+        console.error('Error fetching propdetails:', err);
+        throw err;
+    }
 };
 
 module.exports = {

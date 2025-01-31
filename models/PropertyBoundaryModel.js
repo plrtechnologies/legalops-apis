@@ -5,7 +5,13 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
 });
 
-const createPropertyboundary = async (data) => {
+const createPropertyBoundary = async (data) => {
+    const {
+        session_id, eastBoundrytype, eastBoundryExtent, eastBoundryOwner, 
+         westBoundrytype, westBoundryExtent, westBoundryOwner, 
+         northBoundrytype, northBoundryExtent, northBoundryOwner, 
+         southBoundrytype, southBoundryExtent, southBoundryOwner
+    } = data;
     const sql = `
         INSERT INTO sessions 
         ("session_id", "eastBoundrytype", "eastBoundryExtent", "eastBoundryOwner", 
@@ -33,19 +39,41 @@ const createPropertyboundary = async (data) => {
                   "northBoundrytype", "northBoundryExtent", "northBoundryOwner", 
                   "southBoundrytype", "southBoundryExtent", "southBoundryOwner";
     `;
+    const values = [
+        session_id, eastBoundrytype, eastBoundryExtent, eastBoundryOwner, 
+         westBoundrytype, westBoundryExtent, westBoundryOwner, 
+         northBoundrytype, northBoundryExtent, northBoundryOwner, 
+         southBoundrytype, southBoundryExtent, southBoundryOwner];
 
-    const result = await pool.query(sql, data);
+    const result = await pool.query(sql, values);
     return result.rows[0];
 };
 
-const getPropertyboundaries = async () => {
-    const sql = 'SELECT * FROM sessions';
-    const result = await pool.query(sql);
-    return result.rows;
+const getPropertyBoundaries = async (session_id) => {
+    try {
+        // SQL query to fetch loan proposers for a specific session_id
+        const sql = `
+            SELECT * FROM sessions 
+            WHERE "session_id" = $1;
+        `;
+        const values = [session_id];
+        
+        const result = await pool.query(sql, values);
+        
+        // Return the results if any rows are found
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            return [];  
+        }
+    } catch (err) {
+        console.error('Error fetching PropertyBoundary:', err);
+        throw err;
+    }
 };
 
 module.exports = {
-    createPropertyboundary,
-    getPropertyboundaries, 
+    createPropertyBoundary,
+    getPropertyBoundaries, 
   
 };
