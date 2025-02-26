@@ -17,7 +17,7 @@ const createLoanProposer = async (data) => {
     const sql = `
         INSERT INTO sessions 
         ("session_id", "loanProposerName", "loanProposerRelationType", "loanProposerRelativeName", "loanProposerResidenceType", "loanProposerDoorNumber", "loanProposerStreetName", "loanProposerCityName", "loanProposerMandalName", "loanProposerDistrictName", "loanProposerPincode")
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
         ON CONFLICT ("session_id") 
         DO UPDATE 
         SET 

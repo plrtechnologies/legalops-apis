@@ -16,7 +16,7 @@ const createPropDetail = async (data) => {
     const sql = `
         INSERT INTO sessions 
         ("session_id", "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber", "ExtentOfProperty", "propertyType", "propertyNature") 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8,)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         ON CONFLICT ("session_id") 
         DO UPDATE 
         SET 

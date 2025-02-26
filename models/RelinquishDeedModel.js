@@ -9,7 +9,23 @@ const createRelinquishDeed = async (data) => {
     const {
         session_id, DocType, RelinquisherName, RecipientName, RegistrationDate, DocNumber, IssuigAuthority
     } = data;
-    const sql = 'INSERT INTO relinquishdeed ( session_id, DocType, RelinquisherName, RecipientName, RegistrationDate, DocNumber, IssuigAuthority) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+
+    const sql = `
+  INSERT INTO relinquishdeed 
+  (session_id, doctype, relinquishername, recipientname, registrationdate, docnumber, issuigauthority) 
+  VALUES ($1, $2, $3, $4, $5, $6, $7)
+  ON CONFLICT (session_id) 
+  DO UPDATE 
+  SET 
+    doctype = EXCLUDED.doctype,
+    relinquishername = EXCLUDED.relinquishername,
+    recipientname = EXCLUDED.recipientname,
+    registrationdate = EXCLUDED.registrationdate,
+    docnumber = EXCLUDED.docnumber,
+    issuigauthority = EXCLUDED.issuigauthority
+  RETURNING session_id, doctype, relinquishername, recipientname, registrationdate, docnumber, issuigauthority;
+`;
+
     const values = [session_id, DocType, RelinquisherName, RecipientName, RegistrationDate, DocNumber, IssuigAuthority];
     const result = await pool.query(sql, values);
     return result.rows[0];
@@ -20,7 +36,7 @@ const getRelinquishDeed = async (session_id) => {
     try {
         // SQL query to fetch loan proposers for a specific session_id
         const sql = `
-            SELECT * FROM sessions 
+            SELECT * FROM relinquishdeed
             WHERE "session_id" = $1;
         `;
         const values = [session_id];

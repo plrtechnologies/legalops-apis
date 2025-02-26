@@ -7,21 +7,34 @@ const pool = new Pool({
 
 const createSaleDeed = async (data) => {
     const {
-        session_id, DocType, SellerName, BuyerName, RegistrationDate, DocNumber, IssuigAuthority
+        session_id, doctype, sellername, buyername, registrationdate, docnumber, issuigauthority
     } = data;
-    const sql = 'INSERT INTO saledeed ( session_id, DocType, SellerName, BuyerName, RegistrationDate, DocNumber, IssuigAuthority) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
-    const values = [session_id, DocType, SellerName, BuyerName, RegistrationDate, DocNumber, IssuigAuthority];
+    const sql = `
+    INSERT INTO saledeed 
+    (session_id, doctype, sellername, buyername, registrationdate, docnumber, issuigauthority) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7) 
+    ON CONFLICT ("session_id") 
+    DO UPDATE 
+    SET 
+        doctype = EXCLUDED.doctype,
+        sellername = EXCLUDED.sellername,
+        buyername = EXCLUDED.buyername,
+        registrationdate = EXCLUDED.registrationdate,
+        docnumber = EXCLUDED.docnumber,
+        issuigauthority = EXCLUDED.issuigauthority
+    RETURNING session_id, doctype, sellername, buyername, registrationdate, docnumber, issuigauthority;
+    `;
+    const values = [session_id, doctype, sellername, buyername, registrationdate, docnumber, issuigauthority];
     const result = await pool.query(sql, values);
     return result.rows[0];
 };
-
 
 const getSaleDeed = async (session_id) => {
     try {
         // SQL query to fetch loan proposers for a specific session_id
         const sql = `
-            SELECT * FROM sessions 
-            WHERE "session_id" = $1;
+            SELECT * FROM saledeed 
+            WHERE session_id = $1;
         `;
         const values = [session_id];
         
@@ -39,5 +52,4 @@ const getSaleDeed = async (session_id) => {
     }
 };
 
-
-module.exports = { createSaleDeed,getSaleDeed};
+module.exports = { createSaleDeed, getSaleDeed };

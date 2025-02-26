@@ -78,70 +78,107 @@ const addSession = async (req, res) => {
             data: result  // Returning the result (either the inserted/updated data or whatever the model returns)
         });
     } catch (err) {
-        console.error('Error adding loan proposer:', err.stack);
+        console.error('Error adding data:', err.stack);
         res.status(500).send({
           statusCode: 500,
-          message: 'Error adding loan proposer',
+          message: 'Error adding data',
           error: err.stack
         });
       }
     };
-    // GET API to retrieve all session data
     const getSessionData = async (req, res) => {
         const { session_id } = req.query;  // Extract session_id from query params
-    
+        
         if (!session_id) {
             return res.status(400).json({ message: 'session_id is required' });
         }
-    try {
-        // Fetch all types of data from their respective models
-        const loanProposers = await getLoanProposers(session_id);
-        const propertyDetails = await getPropDetails(session_id);
-        const ecs = await getEc(session_id);
-        const giftDeeds = await getGiftDeed(session_id);
-        const houseTaxDemandNotices = await getHouseTaxDemandNotice(session_id);
-        const houseTaxReceipts = await getHouseTaxReceipt(session_id);
-        const mortgageDeeds = await getMortgageDeed(session_id);
-        const partitionDeeds = await getPartitionDeed(session_id);
-        const relinquishDeeds = await getRelinquishDeed(session_id);
-        const saleDeeds = await getSaleDeed(session_id);
-        const willDeeds = await getWillDeed(session_id);
-        const titleHolders = await getTitleHolder(session_id);
-        const propertyBoundaries = await getPropertyBoundaries(session_id);
-        const mostRecentDocs = await getMostRecentDocs(session_id);
+    
+        try {
+            // Fetch the data for this session only once
+            const loanProposers = await getLoanProposers(session_id); // Fetch once
+            const propertyDetails = await getPropDetails(session_id); // Fetch once
+            const propertyBoundaries = await getPropertyBoundaries(session_id); // Fetch once
+            const mostRecentDocs = await getMostRecentDocs(session_id);
+            const ecs = await getEc(session_id);
+            const giftDeeds = await getGiftDeed(session_id);
+            const houseTaxDemandNotices = await getHouseTaxDemandNotice(session_id);
+            const houseTaxReceipts = await getHouseTaxReceipt(session_id);
+            const mortgageDeeds = await getMortgageDeed(session_id);
+            const partitionDeeds = await getPartitionDeed(session_id);
+            const relinquishDeeds = await getRelinquishDeed(session_id);
+            const saleDeeds = await getSaleDeed(session_id);
+            const willDeeds = await getWillDeed(session_id);
+            const titleHolders = await getTitleHolder(session_id);
+    
+            // Initialize sessionData as an empty object
+        let sessionData = {};
 
-         // Combine all session data into a single object
-         const sessionData = {};
+        // Merge only the 4 key sections: loanProposers, propertyDetails, propertyBoundaries, mostRecentDocs
+        if (loanProposers.length > 0) {
+            sessionData = { ...sessionData, ...loanProposers[0] };
+        }
 
-          // Only include data if it exists for that session_id (prevents empty arrays if no data exists)
-          if (loanProposers.length > 0) sessionData.loanProposers = loanProposers;
-          if (propertyDetails.length > 0) sessionData.propertyDetails = propertyDetails;
-          if (ecs.length > 0) sessionData.ecs = ecs;
-          if (giftDeeds.length > 0) sessionData.giftDeeds = giftDeeds;
-          if (houseTaxDemandNotices.length > 0) sessionData.houseTaxDemandNotices = houseTaxDemandNotices;
-          if (houseTaxReceipts.length > 0) sessionData.houseTaxReceipts = houseTaxReceipts;
-          if (mortgageDeeds.length > 0) sessionData.mortgageDeeds = mortgageDeeds;
-          if (partitionDeeds.length > 0) sessionData.partitionDeeds = partitionDeeds;
-          if (relinquishDeeds.length > 0) sessionData.relinquishDeeds = relinquishDeeds;
-          if (saleDeeds.length > 0) sessionData.saleDeeds = saleDeeds;
-          if (willDeeds.length > 0) sessionData.willDeeds = willDeeds;
-          if (titleHolders.length > 0) sessionData.titleHolders = titleHolders;
-          if (propertyBoundaries.length > 0) sessionData.propertyBoundaries = propertyBoundaries;
-          if (mostRecentDocs.length > 0) sessionData.mostRecentDocs = mostRecentDocs;
-       
-       
-          // Respond with the session data
-        res.status(200).send({
-            statusCode: 200,
-             message: 'Session data retrieved successfully', data: sessionData });
-            } catch (err) {
-                console.error('Error retrieving loan proposers:', err.stack);
-                res.status(500).send({
-                  statusCode: 500,
-                  message: 'Error retrieving loan proposers',
-                  error: err.stack
-                });
-              }
+        if (propertyDetails.length > 0) {
+            sessionData = { ...sessionData, ...propertyDetails[0] };
+        }
+
+        if (propertyBoundaries.length > 0) {
+            sessionData = { ...sessionData, ...propertyBoundaries[0] };
+        }
+
+        if (mostRecentDocs.length > 0) {
+            sessionData = { ...sessionData, ...mostRecentDocs[0] };
+        }
+
+        // Optionally add other types (like Ec, GiftDeed, HouseTax, etc.) without merging them into sessionData
+        if (ecs.length > 0) {
+            sessionData.ec = ecs[0];  // Keeping Ec data separate
+        }
+        if (giftDeeds.length > 0) {
+            sessionData.giftDeed = giftDeeds[0];  // Keeping GiftDeed data separate
+        }
+        if (houseTaxDemandNotices.length > 0 || houseTaxReceipts.length > 0) {
+            sessionData.houseTax = {
+                demandNotice: houseTaxDemandNotices[0] || null,
+                receipt: houseTaxReceipts[0] || null
             };
+        }
+        if (mortgageDeeds.length > 0) {
+            sessionData.mortgageDeed = mortgageDeeds[0];  // Keeping MortgageDeed data separate
+        }
+        if (partitionDeeds.length > 0) {
+            sessionData.partitionDeed = partitionDeeds[0];  // Keeping PartitionDeed data separate
+        }
+        if (relinquishDeeds.length > 0) {
+            sessionData.relinquishDeed = relinquishDeeds[0];  // Keeping RelinquishDeed data separate
+        }
+        if (saleDeeds.length > 0) {
+            sessionData.saleDeed = saleDeeds[0];  // Keeping SaleDeed data separate
+        }
+        if (willDeeds.length > 0) {
+            sessionData.willDeed = willDeeds[0];  // Keeping WillDeed data separate
+        }
+        if (titleHolders.length > 0) {
+            sessionData.titleHolder = titleHolders[0];  // Keeping TitleHolder data separate
+        }
+    
+            // Send the session data once
+            res.status(200).send({
+                statusCode: 200,
+                message: 'Session data retrieved successfully',
+                data: sessionData,
+            });
+        } catch (err) {
+            console.error('Error retrieving session data:', err.stack);
+            res.status(500).send({
+                statusCode: 500,
+                message: 'Error retrieving session data',
+                error: err.stack
+            });
+        }
+    };
+    
+    
+    
 
 module.exports = { addSession, getSessionData };
