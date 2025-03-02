@@ -9,7 +9,21 @@ const createHouseTaxReceipt = async (data) => {
     const {
         session_id, DocType, ReceiptIssuigAuthority, DoorNumberOnReceipt, AssessmentNumberOnReceipt, AmountPaid, AmountPaidInFavourOf
     } = data;
-    const sql = 'INSERT INTO housetaxreceipt ( session_id, DocType, ReceiptIssuigAuthority, DoorNumberOnReceipt, AssessmentNumberOnReceipt, AmountPaid, AmountPaidInFavourOf ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+    const sql = `
+    INSERT INTO housetaxreceipt
+     ( session_id, DocType, ReceiptIssuigAuthority, DoorNumberOnReceipt, AssessmentNumberOnReceipt, AmountPaid, AmountPaidInFavourOf ) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+       ON CONFLICT ("session_id") 
+    DO UPDATE 
+    SET 
+        DocType = EXCLUDED.DocType,
+       ReceiptIssuigAuthority = EXCLUDED.ReceiptIssuigAuthority,
+        DoorNumberOnReceipt = EXCLUDED.DoorNumberOnReceipt,
+        AssessmentNumberOnReceipt = EXCLUDED.AssessmentNumberOnReceipt,
+         AmountPaid = EXCLUDED. AmountPaid,
+         AmountPaidInFavourOf = EXCLUDED.AmountPaidInFavourOf
+    RETURNING   session_id, DocType, ReceiptIssuigAuthority, DoorNumberOnReceipt, AssessmentNumberOnReceipt, AmountPaid, AmountPaidInFavourOf ;
+`;
     // Pass data as an array
 const values = [session_id, DocType, ReceiptIssuigAuthority, DoorNumberOnReceipt, AssessmentNumberOnReceipt, AmountPaid, AmountPaidInFavourOf];
 const result = await pool.query(sql, values);
@@ -20,7 +34,7 @@ const getHouseTaxReceipt = async (session_id) => {
     try {
         // SQL query to fetch loan proposers for a specific session_id
         const sql = `
-            SELECT * FROM sessions 
+            SELECT * FROM housetaxreceipt
             WHERE "session_id" = $1;
         `;
         const values = [session_id];

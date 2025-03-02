@@ -36,7 +36,7 @@ const getHouseTaxDemandNotice = async (session_id) => {
     try {
         // SQL query to fetch loan proposers for a specific session_id
         const sql = `
-            SELECT * FROM sessions 
+            SELECT * FROM housetaxdemandnotice
             WHERE "session_id" = $1;
         `;
         const values = [session_id];

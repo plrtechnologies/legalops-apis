@@ -9,18 +9,31 @@ const createWillDeed = async (data) => {
     const {
         session_id, DocType, TestatorName, BeneficiaryName, RegistrationDate, DocNumber, IssuigAuthority
     } = data;
-    const sql = 'INSERT INTO willdeed ( session_id, DocType, TestatorName, BeneficiaryName, RegistrationDate, DocNumber, IssuigAuthority) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+    const sql = `
+    INSERT INTO willdeed 
+    (session_id, doctype, testatorname, beneficiaryname, registrationdate, docnumber, issuigauthority) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    ON CONFLICT ("session_id") 
+    DO UPDATE 
+    SET 
+        doctype = EXCLUDED.doctype,
+        testatorname = EXCLUDED.testatorname,
+        beneficiaryname = EXCLUDED.beneficiaryname,
+        registrationdate = EXCLUDED.registrationdate,
+        docnumber = EXCLUDED.docnumber,
+        issuigauthority = EXCLUDED.issuigauthority
+    RETURNING session_id, doctype, testatorname, beneficiaryname, registrationdate, docnumber, issuigauthority;
+    `;
     const values = [session_id, DocType, TestatorName, BeneficiaryName, RegistrationDate, DocNumber, IssuigAuthority];
     const result = await pool.query(sql, values);
     return result.rows[0];
 };
 
-
 const getWillDeed = async (session_id) => {
     try {
         // SQL query to fetch loan proposers for a specific session_id
         const sql = `
-            SELECT * FROM sessions 
+            SELECT * FROM willdeed
             WHERE "session_id" = $1;
         `;
         const values = [session_id];
