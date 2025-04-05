@@ -1,10 +1,12 @@
 const express = require('express');
+
 const swaggerUi = require('swagger-ui-express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const cors = require('cors');
 const fs = require('fs');
+const docxtemplatorRoutes = require('./routes/DocxtemplatorRoutes'); // Ensure correct path
 
 const authRoutes = require('./routes/authRoutes');
 const authenticate = require('./middleware/authenticate');
@@ -32,7 +34,10 @@ app.use(session({
 // Middleware for routes
 app.use('/api', authRoutes);
 app.use('/api', authenticate);
-app.use('/api', sessionRoutes);
+
+app.use('/api',sessionRoutes);
+app.use('/api', docxtemplatorRoutes); // Prefix all routes with /api
+
 
 // 🔹 Load Swagger JSON File
 const swaggerFile = './swagger.json';
