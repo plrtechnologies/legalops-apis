@@ -1,17 +1,25 @@
+// app.js
 const express = require('express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
+
+
+
 
 const authRoutes = require('./routes/authRoutes');
 const authenticate = require('./middleware/authenticate');  // JWT Authentication Middleware
-const sessionRoutes= require('./routes/sessionRoutes');
+const sessionRoutes = require('./routes/sessionRoutes');
 const app = express();
 const port = 3000;
+
+
 
 // Middleware setup
 app.use(express.json());  // To parse JSON bodies
@@ -33,6 +41,8 @@ app.use(session({
 app.use('/api', authRoutes);  // Login/Register routes (to get JWT)
 app.use('/api', authenticate);  // JWT authentication middleware for the routes below
 app.use('/api', sessionRoutes);
+
+
 
 // Error handling middleware
 app.use((req, res, next) => {
