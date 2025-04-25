@@ -19,6 +19,7 @@
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
     "pg": "^8.13.0",
     "plrproject": "file:",
     "swagger-jsdoc": "^6.2.8",
