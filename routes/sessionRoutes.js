@@ -10,4 +10,7 @@ router.post('/session', sessionController.addSession);
 // GET route to retrieve session data by session_id (passed as a URL param)
 router.get('/session/:session_id', sessionController.getSession);
 
+
+
+
 module.exports = router;

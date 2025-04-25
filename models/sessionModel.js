@@ -26,6 +26,7 @@ const createOrUpdateSession = async (data) => {
     // Destructure AFTER modifying the data object
     let {
         session_id,
+    
 
         // Loan Proposer
         loanProposerName, loanProposerRelationType, loanProposerRelativeName,
@@ -79,7 +80,7 @@ const createOrUpdateSession = async (data) => {
             "southBoundrytype", "southBoundryExtent", "southBoundryOwner",
 
             "selectDeedType", "dateofRegistration", "documentNumber", "nameofSubregistrarOffice",
-            "locationOfSubregistrarOffice", "subregistrarOfficeMandal", "subregistrarOfficeDistrict", "subregistrarOfficeLocalAuthority"
+            "locationOfSubregistrarOffice", "subregistrarOfficeMandal", "subregistrarOfficeDistrict", "subregistrarOfficeLocalAuthority", "current_page"
         ) VALUES (
             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,
             $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
@@ -140,6 +141,8 @@ const createOrUpdateSession = async (data) => {
             "subregistrarOfficeMandal" = EXCLUDED."subregistrarOfficeMandal",
             "subregistrarOfficeDistrict" = EXCLUDED."subregistrarOfficeDistrict",
             "subregistrarOfficeLocalAuthority" = EXCLUDED."subregistrarOfficeLocalAuthority"
+        
+
         RETURNING *;
     `;
 
