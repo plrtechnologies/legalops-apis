@@ -6,16 +6,53 @@ const pool = new Pool({
 });
 
 const createEc = async (data) => {
-    const sql = 'INSERT INTO ec ( session_id, DocType, EcIssuigAuthority, EcStatementNumber, FromDate, ToDate) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-    const result = await pool.query(sql, data);
+
+    const {
+        session_id, DocType, EcIssuigAuthority, EcStatementNumber, FromDate, ToDate
+    } = data;
+
+    const sql =`
+      INSERT INTO ec ( session_id, DocType, EcIssuigAuthority, EcStatementNumber, FromDate, ToDate) 
+    VALUES ($1, $2, $3, $4, $5, $6) 
+    ON CONFLICT ("session_id") 
+    DO UPDATE 
+    SET 
+        DocType = EXCLUDED.DocType,
+        EcIssuigAuthority = EXCLUDED.EcIssuigAuthority,
+        EcStatementNumber = EXCLUDED.EcStatementNumber,
+        FromDate = EXCLUDED.FromDate,
+        ToDate = EXCLUDED.ToDate
+    RETURNING   session_id, DocType, EcIssuigAuthority, EcStatementNumber, FromDate, ToDate ;
+`;
+
+// Pass data as an array
+const values = [session_id, DocType, EcIssuigAuthority, EcStatementNumber, FromDate, ToDate];
+    const result = await pool.query(sql, values);
     return result.rows[0];
 };
 
 
-const getEc = async () => {
-    const sql = 'SELECT  DocType, EcIssuigAuthority, EcStatementNumber, FromDate, ToDate FROM ec';
-    const result = await pool.query(sql);
-    return result.rows;
+const getEc = async (session_id) => {
+    try {
+        // SQL query to fetch loan proposers for a specific session_id
+        const sql = `
+            SELECT * FROM ec 
+            WHERE "session_id" = $1;
+        `;
+        const values = [session_id];
+        
+        const result = await pool.query(sql, values);
+        
+        // Return the results if any rows are found
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            return []; 
+        }
+    } catch (err) {
+        console.error('Error fetching Ec:', err);
+        throw err;
+    }
 };
 
 
