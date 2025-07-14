@@ -11,12 +11,11 @@ const cors = require('cors');
 const multer = require('multer');
 
 
-
-
 const authRoutes = require('./routes/authRoutes');
 const authenticate = require('./middleware/authenticate');  // JWT Authentication Middleware
 const sessionRoutes = require('./routes/sessionRoutes');
 const linkdocRoutes = require('./routes/linkdocRoutes');
+const combinedRoutes = require('./routes/combinedRoutes');
 const app = express();
 const port = 3000;
 
@@ -43,6 +42,7 @@ app.use('/api', authRoutes);  // Login/Register routes (to get JWT)
 app.use('/api', authenticate);  // JWT authentication middleware for the routes below
 app.use('/api', sessionRoutes);
 app.use('/api', linkdocRoutes);
+app.use('/api', combinedRoutes);
 
 
 
