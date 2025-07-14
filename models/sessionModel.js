@@ -3,7 +3,10 @@ require('dotenv').config();
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-});
+    ssl: {
+      rejectUnauthorized: false,  // Bypass cert validation for self-signed certs
+    },
+  });
 
 const createOrUpdateSession = async (data) => {
     // Convert to boolean safely
@@ -11,84 +14,85 @@ const createOrUpdateSession = async (data) => {
 
     // Nullify title holder fields in original data if same as loan proposer
     if (isSame) {
-        data.TitleHolderName = null;
-        data.TitleHolderRelationType = null;
-        data.TitleHolderRelativeName = null;
-        data.TitleHolderResidenceType = null;
-        data.TitleHolderDoorNumber = null;
-        data.TitleHolderStreetName = null;
-        data.TitleHolderCityName = null;
-        data.TitleHolderMandalName = null;
-        data.TitleHolderDistrictName = null;
-        data.TitleHolderPincode = null;
+        data.titleHolderName = null;
+        data.titleHolderRelationType = null;
+        data.titleHolderRelativeName = null;
+        data.titleHolderResidenceType = null;
+        data.titleHolderDoorNumber = null;
+        data.titleHolderStreetName = null;
+        data.titleHolderCityName = null;
+        data.titleHolderMandalName = null;
+        data.titleHolderDistrictName = null;
+        data.titleHolderPincode = null;
     }
 
     // Destructure AFTER modifying the data object
     let {
-        session_id,
-    
-
+        session_id, user_id,
         // Loan Proposer
         loanProposerName, loanProposerRelationType, loanProposerRelativeName,
         loanProposerResidenceType, loanProposerDoorNumber, loanProposerStreetName,
         loanProposerCityName, loanProposerMandalName, loanProposerDistrictName, loanProposerPincode, isTitleHolderSameAsLoanProposer,
 
         // Title Holder
-        TitleHolderName, TitleHolderRelationType, TitleHolderRelativeName, TitleHolderResidenceType,
-        TitleHolderDoorNumber, TitleHolderStreetName, TitleHolderCityName, TitleHolderMandalName,
-        TitleHolderDistrictName, TitleHolderPincode,
+        titleHolderName, titleHolderRelationType, titleHolderRelativeName, titleHolderResidenceType,
+        titleHolderDoorNumber, titleHolderStreetName, titleHolderCityName, titleHolderMandalName,
+        titleHolderDistrictName, titleHolderPincode,
 
         // Property Details
         propertyDoorNumber, nearbyDoor, propertyAssessmentNumber, propertySurveyNumber,
-        ExtentOfProperty, propertyType, propertyNature,
+        extentOfProperty, propertyType, propertyNature,
 
         // Property Boundaries
-        eastBoundrytype, eastBoundryExtent, eastBoundryOwner,
-        westBoundrytype, westBoundryExtent, westBoundryOwner,
-        northBoundrytype, northBoundryExtent, northBoundryOwner,
-        southBoundrytype, southBoundryExtent, southBoundryOwner,
+        eastBoundaryType, eastBoundaryExtent, eastBoundaryOwner,
+        westBoundaryType, westBoundaryExtent, westBoundaryOwner,
+        northBoundaryType, northBoundaryExtent, northBoundaryOwner,
+        southBoundaryType, southBoundaryExtent, southBoundaryOwner,
 
         // Most Recent Document
-        selectDeedType, dateofRegistration, documentNumber, nameofSubregistrarOffice,
-        locationOfSubregistrarOffice, subregistrarOfficeMandal, subregistrarOfficeDistrict, subregistrarOfficeLocalAuthority
+        selectDeedType, dateOfRegistration, documentNumber, nameOfSubRegistrarOffice,
+        locationOfSubRegistrarOffice, subRegistrarOfficeMandal, subRegistrarOfficeDistrict, subRegistrarOfficeLocalAuthority
     } = data;
 
     const titleHolderValues = [
-        TitleHolderName, TitleHolderRelationType, TitleHolderRelativeName,
-        TitleHolderResidenceType, TitleHolderDoorNumber, TitleHolderStreetName,
-        TitleHolderCityName, TitleHolderMandalName, TitleHolderDistrictName, TitleHolderPincode
+        titleHolderName, titleHolderRelationType, titleHolderRelativeName,
+        titleHolderResidenceType, titleHolderDoorNumber, titleHolderStreetName,
+        titleHolderCityName, titleHolderMandalName, titleHolderDistrictName, titleHolderPincode
     ];
 
     const sql = `
         INSERT INTO sessions (
-            session_id,
+            "session_id", "user_id",
 
             "loanProposerName", "loanProposerRelationType", "loanProposerRelativeName", "loanProposerResidenceType",
             "loanProposerDoorNumber", "loanProposerStreetName", "loanProposerCityName", "loanProposerMandalName",
             "loanProposerDistrictName", "loanProposerPincode", "isTitleHolderSameAsLoanProposer",
 
-            "TitleHolderName", "TitleHolderRelationType", "TitleHolderRelativeName", "TitleHolderResidenceType",
-            "TitleHolderDoorNumber", "TitleHolderStreetName", "TitleHolderCityName", "TitleHolderMandalName",
-            "TitleHolderDistrictName", "TitleHolderPincode",
+            "titleHolderName", "titleHolderRelationType", "titleHolderRelativeName", "titleHolderResidenceType",
+            "titleHolderDoorNumber", "titleHolderStreetName", "titleHolderCityName", "titleHolderMandalName",
+            "titleHolderDistrictName", "titleHolderPincode",
 
             "propertyDoorNumber", "nearbyDoor", "propertyAssessmentNumber", "propertySurveyNumber",
-            "ExtentOfProperty", "propertyType", "propertyNature",
+            "extentOfProperty", "propertyType", "propertyNature",
 
-            "eastBoundrytype", "eastBoundryExtent", "eastBoundryOwner",
-            "westBoundrytype", "westBoundryExtent", "westBoundryOwner",
-            "northBoundrytype", "northBoundryExtent", "northBoundryOwner",
-            "southBoundrytype", "southBoundryExtent", "southBoundryOwner",
+            "eastBoundaryType", "eastBoundaryExtent", "eastBoundaryOwner",
+            "westBoundaryType", "westBoundaryExtent", "westBoundaryOwner",
+            "northBoundaryType", "northBoundaryExtent", "northBoundaryOwner",
+            "southBoundaryType", "southBoundaryExtent", "southBoundaryOwner",
 
-            "selectDeedType", "dateofRegistration", "documentNumber", "nameofSubregistrarOffice",
-            "locationOfSubregistrarOffice", "subregistrarOfficeMandal", "subregistrarOfficeDistrict", "subregistrarOfficeLocalAuthority", "current_page"
+            "selectDeedType", "dateOfRegistration", "documentNumber", "nameOfSubRegistrarOffice",
+            "locationOfSubRegistrarOffice", "subRegistrarOfficeMandal", "subRegistrarOfficeDistrict", "subRegistrarOfficeLocalAuthority"
         ) VALUES (
             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,
             $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
             $23, $24, $25, $26, $27, $28, $29,
             $30, $31, $32, $33, $34, $35, $36, $37, $38, $39,
-            $40, $41, $42, $43, $44, $45, $46, $47, $48, $49
+            $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $50
         )
         ON CONFLICT (session_id) DO UPDATE SET
+          
+            "user_id" = EXCLUDED."user_id",
+
             "loanProposerName" = EXCLUDED."loanProposerName",
             "loanProposerRelationType" = EXCLUDED."loanProposerRelationType",
             "loanProposerRelativeName" = EXCLUDED."loanProposerRelativeName",
@@ -101,53 +105,54 @@ const createOrUpdateSession = async (data) => {
             "loanProposerPincode" = EXCLUDED."loanProposerPincode",
             "isTitleHolderSameAsLoanProposer" = EXCLUDED."isTitleHolderSameAsLoanProposer",
 
-            "TitleHolderName" = EXCLUDED."TitleHolderName",
-            "TitleHolderRelationType" = EXCLUDED."TitleHolderRelationType",
-            "TitleHolderRelativeName" = EXCLUDED."TitleHolderRelativeName",
-            "TitleHolderResidenceType" = EXCLUDED."TitleHolderResidenceType",
-            "TitleHolderDoorNumber" = EXCLUDED."TitleHolderDoorNumber",
-            "TitleHolderStreetName" = EXCLUDED."TitleHolderStreetName",
-            "TitleHolderCityName" = EXCLUDED."TitleHolderCityName",
-            "TitleHolderMandalName" = EXCLUDED."TitleHolderMandalName",
-            "TitleHolderDistrictName" = EXCLUDED."TitleHolderDistrictName",
-            "TitleHolderPincode" = EXCLUDED."TitleHolderPincode",
+            "titleHolderName" = EXCLUDED."titleHolderName",
+            "titleHolderRelationType" = EXCLUDED."titleHolderRelationType",
+            "titleHolderRelativeName" = EXCLUDED."titleHolderRelativeName",
+            "titleHolderResidenceType" = EXCLUDED."titleHolderResidenceType",
+            "titleHolderDoorNumber" = EXCLUDED."titleHolderDoorNumber",
+            "titleHolderStreetName" = EXCLUDED."titleHolderStreetName",
+            "titleHolderCityName" = EXCLUDED."titleHolderCityName",
+            "titleHolderMandalName" = EXCLUDED."titleHolderMandalName",
+            "titleHolderDistrictName" = EXCLUDED."titleHolderDistrictName",
+            "titleHolderPincode" = EXCLUDED."titleHolderPincode",
 
             "propertyDoorNumber" = EXCLUDED."propertyDoorNumber",
             "nearbyDoor" = EXCLUDED."nearbyDoor",
             "propertyAssessmentNumber" = EXCLUDED."propertyAssessmentNumber",
             "propertySurveyNumber" = EXCLUDED."propertySurveyNumber",
-            "ExtentOfProperty" = EXCLUDED."ExtentOfProperty",
+            "extentOfProperty" = EXCLUDED."extentOfProperty",
             "propertyType" = EXCLUDED."propertyType",
             "propertyNature" = EXCLUDED."propertyNature",
 
-            "eastBoundrytype" = EXCLUDED."eastBoundrytype",
-            "eastBoundryExtent" = EXCLUDED."eastBoundryExtent",
-            "eastBoundryOwner" = EXCLUDED."eastBoundryOwner",
-            "westBoundrytype" = EXCLUDED."westBoundrytype",
-            "westBoundryExtent" = EXCLUDED."westBoundryExtent",
-            "westBoundryOwner" = EXCLUDED."westBoundryOwner",
-            "northBoundrytype" = EXCLUDED."northBoundrytype",
-            "northBoundryExtent" = EXCLUDED."northBoundryExtent",
-            "northBoundryOwner" = EXCLUDED."northBoundryOwner",
-            "southBoundrytype" = EXCLUDED."southBoundrytype",
-            "southBoundryExtent" = EXCLUDED."southBoundryExtent",
-            "southBoundryOwner" = EXCLUDED."southBoundryOwner",
+            "eastBoundaryType" = EXCLUDED."eastBoundaryType",
+            "eastBoundaryExtent" = EXCLUDED."eastBoundaryExtent",
+            "eastBoundaryOwner" = EXCLUDED."eastBoundaryOwner",
+            "westBoundaryType" = EXCLUDED."westBoundaryType",
+            "westBoundaryExtent" = EXCLUDED."westBoundaryExtent",
+            "westBoundaryOwner" = EXCLUDED."westBoundaryOwner",
+            "northBoundaryType" = EXCLUDED."northBoundaryType",
+            "northBoundaryExtent" = EXCLUDED."northBoundaryExtent",
+            "northBoundaryOwner" = EXCLUDED."northBoundaryOwner",
+            "southBoundaryType" = EXCLUDED."southBoundaryType",
+            "southBoundaryExtent" = EXCLUDED."southBoundaryExtent",
+            "southBoundaryOwner" = EXCLUDED."southBoundaryOwner",
 
             "selectDeedType" = EXCLUDED."selectDeedType",
-            "dateofRegistration" = EXCLUDED."dateofRegistration",
+            "dateOfRegistration" = EXCLUDED."dateOfRegistration",
             "documentNumber" = EXCLUDED."documentNumber",
-            "nameofSubregistrarOffice" = EXCLUDED."nameofSubregistrarOffice",
-            "locationOfSubregistrarOffice" = EXCLUDED."locationOfSubregistrarOffice",
-            "subregistrarOfficeMandal" = EXCLUDED."subregistrarOfficeMandal",
-            "subregistrarOfficeDistrict" = EXCLUDED."subregistrarOfficeDistrict",
-            "subregistrarOfficeLocalAuthority" = EXCLUDED."subregistrarOfficeLocalAuthority"
+            "nameOfSubRegistrarOffice" = EXCLUDED."nameOfSubRegistrarOffice",
+            "locationOfSubRegistrarOffice" = EXCLUDED."locationOfSubRegistrarOffice",
+            "subRegistrarOfficeMandal" = EXCLUDED."subRegistrarOfficeMandal",
+            "subRegistrarOfficeDistrict" = EXCLUDED."subRegistrarOfficeDistrict",
+            "subRegistrarOfficeLocalAuthority" = EXCLUDED."subRegistrarOfficeLocalAuthority"
+    
         
 
         RETURNING *;
     `;
 
     const values = [
-        session_id,
+        session_id, user_id,
         loanProposerName, loanProposerRelationType, loanProposerRelativeName, loanProposerResidenceType,
         loanProposerDoorNumber, loanProposerStreetName, loanProposerCityName, loanProposerMandalName,
         loanProposerDistrictName, loanProposerPincode, isTitleHolderSameAsLoanProposer,
@@ -155,15 +160,15 @@ const createOrUpdateSession = async (data) => {
         ...titleHolderValues,
 
         propertyDoorNumber, nearbyDoor, propertyAssessmentNumber, propertySurveyNumber,
-        ExtentOfProperty, propertyType, propertyNature,
+        extentOfProperty, propertyType, propertyNature,
 
-        eastBoundrytype, eastBoundryExtent, eastBoundryOwner,
-        westBoundrytype, westBoundryExtent, westBoundryOwner,
-        northBoundrytype, northBoundryExtent, northBoundryOwner,
-        southBoundrytype, southBoundryExtent, southBoundryOwner,
+        eastBoundaryType, eastBoundaryExtent, eastBoundaryOwner,
+        westBoundaryType, westBoundaryExtent, westBoundaryOwner,
+        northBoundaryType, northBoundaryExtent, northBoundaryOwner,
+        southBoundaryType, southBoundaryExtent, southBoundaryOwner,
 
-        selectDeedType, dateofRegistration, documentNumber, nameofSubregistrarOffice,
-        locationOfSubregistrarOffice, subregistrarOfficeMandal, subregistrarOfficeDistrict, subregistrarOfficeLocalAuthority
+        selectDeedType, dateOfRegistration, documentNumber, nameOfSubRegistrarOffice,
+        locationOfSubRegistrarOffice, subRegistrarOfficeMandal, subRegistrarOfficeDistrict, subRegistrarOfficeLocalAuthority
     ];
 
     const result = await pool.query(sql, values);
@@ -174,9 +179,31 @@ const getSessionById = async (session_id) => {
     const sql = `SELECT * FROM sessions WHERE session_id = $1;`;
     const result = await pool.query(sql, [session_id]);
     return result.rows[0] || null;
+
 };
+
+
+const getSessionsByName = async (name) => {
+    const sql = `SELECT * FROM sessions WHERE "loanProposerName" = $1;`;
+    const result = await pool.query(sql, [name]);
+    return result.rows; // return all matching rows as an array
+  };
+  
+
+  const getSessionsByUserId = async (user_id) => {
+    const sql = `
+      SELECT * FROM sessions 
+      WHERE user_id = $1;
+    `;
+    const result = await pool.query(sql, [user_id]);
+    return result.rows; // returns an array of sessions
+  };
+  
 
 module.exports = {
     createOrUpdateSession,
     getSessionById,
+    getSessionsByName,
+    getSessionsByUserId 
+
 };
