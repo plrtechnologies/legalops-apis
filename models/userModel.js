@@ -4,8 +4,14 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // ✅ This accepts self-signed SSL certs
+  }
 });
+
+module.exports = pool;
+
 
 const User = {
   // Check if a user already exists by email
@@ -37,5 +43,4 @@ findById: async (userId) => {
 }
 };
 module.exports = User;
-
 

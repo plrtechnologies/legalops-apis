@@ -1,12 +1,12 @@
 
 const { createOrUpdateLinkDocument, getLinkDocumentBySessionId } = require('../models/linkdocModel');
 
-
 const addlinkDocument = async (req, res) => {
     try {
+        console.log("Received data in controller:", req.body);
         const data = req.body;
 
-        if (!data.selectDeedType) {
+      if (!data.selectDeedType) {
             return res.status(400).json({ error: 'Missing selectDeedType in request' });
         }
 

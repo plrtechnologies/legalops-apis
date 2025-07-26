@@ -10,9 +10,8 @@ const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
 
-
-
-
+//const finaldocRoutes = require('./routes/finaldocRoutes');
+const docxtemplatorRoutes = require('./routes/DocxtemplatorRoutes'); // Ensure correct path
 const authRoutes = require('./routes/authRoutes');
 const authenticate = require('./middleware/authenticate');  // JWT Authentication Middleware
 const sessionRoutes = require('./routes/sessionRoutes');
@@ -38,6 +37,9 @@ app.use(session({
       secure: process.env.NODE_ENV === 'production',
     }
 }));
+
+app.use('/api', docxtemplatorRoutes); // Prefix all routes with /api
+//app.use('/api', finaldocRoutes);
 
 app.use('/api', authRoutes);  // Login/Register routes (to get JWT)
 app.use('/api', authenticate);  // JWT authentication middleware for the routes below
