@@ -1,6 +1,6 @@
 const {
   createOrUpdateSession,
-  getSessionById,
+  getSessionsBySessionId,
   getSessionsByName,
   getSessionsByUserId
 } = require('../models/sessionModel');
@@ -73,11 +73,11 @@ const createSession = async (req, res) => {
     if ('current_page' in req.body) delete req.body.current_page;
 
     const result = await createOrUpdateSession(req.body);
-    const updatedSession = await getSessionById(result.session_id);
+    const updatedSession = await getSessionsBySessionId(result.session_id);
 
 
-    const current_page = getCurrentPageName(session);
-    const data = filterAllFilledFields(session);
+    const current_page = getCurrentPageName(updatedSession);
+    const data = filterAllFilledFields(updatedSession);
     
 
     return res.status(200).json({
@@ -93,7 +93,7 @@ const createSession = async (req, res) => {
 
 
 // RESUME session (GET by loanproposername) - returns current_page + filtered data only
-const resumeSession = async (req, res) => {
+const getSessionByName = async (req, res) => {
   const { name } = req.query;
 
   if (!name) {
@@ -125,7 +125,7 @@ const data = filterAllFilledFields(session);
 };
 
 // GET session by session_id - returns full session object (no filtering)
-const getSession = async (req, res) => {
+const getSessionByID = async (req, res) => {
   try {
     const { session_id } = req.params;
 
@@ -133,7 +133,7 @@ const getSession = async (req, res) => {
       return res.status(400).json({ error: 'Session ID is required' });
     }
 
-    const session = await getSessionById(session_id);
+    const session = await getSessionsBySessionId(session_id);
 
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
@@ -146,25 +146,24 @@ const getSession = async (req, res) => {
   }
 };
 
-//GET session by email
-const resumeSessionByEmail = async (req, res) => {
-  const { email } = req.query;
+//GET session by user_id
+const getSessionByUserId = async (req, res) => {
+  const { user_id } = req.query;
 
-  if (!email) {
-    return res.status(400).json({ error: 'Query param "email" is required' });
+  if (!user_id) {
+    return res.status(400).json({ error: 'Query param "user_id" is required' });
   }
 
   try {
-    const sessions = await getSessionsByUserId(email);
+    const sessions = await getSessionsByUserId(user_id);
 
     if (!sessions || sessions.length === 0) {
-      return res.status(404).json({ error: 'No sessions found for this email' });
+      return res.status(404).json({ error: 'No sessions found for this user_id' });
     }
 
     const sessionsWithPageData = sessions.map((session) => {
       const current_page = getCurrentPageName(session);
       const data = filterAllFilledFields(session);
-      
 
       return {
         session_id: session.session_id,
@@ -175,7 +174,7 @@ const resumeSessionByEmail = async (req, res) => {
 
     return res.status(200).json(sessionsWithPageData);
   } catch (err) {
-    console.error('resumeSessionByEmail error:', err);
+    console.error('resumeSessionByUserId error:', err);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -183,7 +182,7 @@ const resumeSessionByEmail = async (req, res) => {
 
 module.exports = {
   createSession,
-  resumeSession,
-  getSession,
-  resumeSessionByEmail
+  getSessionByName,
+  getSessionByID,
+  getSessionByUserId
 };

@@ -154,16 +154,18 @@ const createOrUpdateLinkDocument = async (data) => {
     return result.rows[0];
 };
 
-const getLinkDocumentBySessionId = async (session_id) => {
+const getLinkDocumentsBySessionId = async (session_id) => {
     const result = await pool.query('SELECT * FROM link_documents WHERE session_id = $1;', [session_id]);
     return result.rows[0] || null;
 };
 
-// ✅ Get all sessions by user_id (email)
 const getLinkDocumentsByUserId = async (user_id) => {
-    const result = await pool.query('SELECT * FROM link_documents WHERE user_id = $1 ORDER BY session_id DESC;', [user_id]);
-    return result.rows;
-  };
+  const result = await pool.query(
+    'SELECT * FROM link_documents WHERE user_id = $1',
+    [user_id]
+  );
+  return result.rows;
+};
 
   const getLinkDocumentsByName = async (loanProposerName) => {
     const sql = `
@@ -181,7 +183,7 @@ const getLinkDocumentsByUserId = async (user_id) => {
   
   module.exports = {
     createOrUpdateLinkDocument,
-    getLinkDocumentBySessionId,
+    getLinkDocumentsBySessionId,
     getLinkDocumentsByUserId,
     getLinkDocumentsByName,
   };

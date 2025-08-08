@@ -1,22 +1,15 @@
 const express = require('express');
 const router = express.Router();
-
-// Import the controller
 const sessionController = require('../controllers/sessionController');
+const authenticate = require('../middleware/authenticate');
+const requireRole = require('../middleware/requireRole');
 
-//POST  For fresh document creation
+// ✅ Apply backend protection to all routes in this file
+router.use(authenticate, requireRole('backend'));
+
 router.post('/create-session', sessionController.createSession);
-
-
-//GET- resume session by email
-router.get('/session/resume-by-email', sessionController.resumeSessionByEmail);
-
-// GET - Resume session by loanproposername
-router.get('/session/resume-session', sessionController.resumeSession);
-
-// GET route to retrieve session data by session_id (passed as a URL param)
-router.get('/session/:session_id', sessionController.getSession);
-
-
+router.get('/user_id', sessionController.getSessionByUserId);
+router.get('/loanproposername', sessionController.getSessionByName);
+router.get('/session_id', sessionController.getSessionByID);
 
 module.exports = router;

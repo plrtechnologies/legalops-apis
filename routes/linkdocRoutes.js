@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const linkdocController = require('../controllers/linkdocController');
+const authenticate = require('../middleware/authenticate');
+const requireRole = require('../middleware/requireRole');
 
-router.post('/linkdoc/session', linkdocController.addLinkDocument);
-router.get('/linkdoc/resume-by-email', linkdocController.resumeLinkSessionsByEmail);
-router.get('/linkdoc/search-by-loanproposer', linkdocController.getLinkDocsByName);
-router.get('/linkdoc/:session_id', linkdocController.getLinkDocument);
+// ✅ Apply backend protection to all routes in this file
+router.use(authenticate, requireRole('backend'));
 
-
-
-
-
+router.post('/create-linkdoc', linkdocController.addLinkDocument);
+router.get('/doc-user_id', linkdocController.getLinkDocsByUserId);
+router.get('/doc-loanproposername', linkdocController.getLinkDocsByName);
+router.get('/doc-session_id', linkdocController.getLinkDocsByID);
 
 module.exports = router;

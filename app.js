@@ -1,4 +1,3 @@
-// app.js
 const express = require('express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -9,55 +8,54 @@ require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
+const authenticate = require('./middleware/authenticate');
 
-
-const authRoutes = require('./routes/authRoutes');
-const authenticate = require('./middleware/authenticate');  // JWT Authentication Middleware
+const frontendRoutes = require('./routes/frontendRoutes');
+const backendRoutes = require('./routes/backendRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
 const linkdocRoutes = require('./routes/linkdocRoutes');
 const combinedRoutes = require('./routes/combinedRoutes');
+
 const app = express();
 const port = 3000;
 
-
-
 // Middleware setup
-app.use(express.json());  // To parse JSON bodies
-app.use(express.urlencoded({ extended: true }));  // To parse URL-encoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Session configuration
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'your_secret_key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 3600000,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    }
+  secret: process.env.SESSION_SECRET || 'your_secret_key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 3600000,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+  }
 }));
 
-app.use('/api', authRoutes);  // Login/Register routes (to get JWT)
-app.use('/api', authenticate);  // JWT authentication middleware for the routes below
-app.use('/api', sessionRoutes);
-app.use('/api', linkdocRoutes);
-app.use('/api', combinedRoutes);
+// Public routes: frontend and backend signup/login (no auth)
+app.use('/api/frontend', frontendRoutes);
+app.use('/api/backend', backendRoutes);
 
+// Protected routes (require authentication)
+app.use('/api/session', authenticate, sessionRoutes);
+app.use('/api/linkdoc', authenticate, linkdocRoutes);
+app.use('/api/combined', authenticate, combinedRoutes);
 
-
-// Error handling middleware
+// 404 handler
 app.use((req, res, next) => {
-    res.status(404).json({ error: 'Route not found' });
+  res.status(404).json({ error: 'Route not found' });
 });
 
-// Global error handler
+// Error handler
 app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ error: 'Internal Server Error' });
+  console.error(err);
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
-// Start the server
+// Start server
 app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
