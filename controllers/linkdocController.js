@@ -1,6 +1,6 @@
 const {
     createOrUpdateLinkDocument,
-    getLinkDocumentBySessionId,
+    getLinkDocumentsBySessionId,
     getLinkDocumentsByUserId,
     getLinkDocumentsByName,
   } = require('../models/linkdocModel');
@@ -121,13 +121,14 @@ const addLinkDocument = async (req, res) => {
       req.body.selectDeedType = selectDeedType;
   
       const result = await createOrUpdateLinkDocument(req.body);
-      const updated = await getLinkDocumentBySessionId(result.session_id);
+      const updated = await getLinkDocumentsBySessionId(result.session_id);
   
       const current_page = getCurrentLinkPageName(updated);
       const data = filterLinkDocFieldsUpToPage(updated, current_page);
   
       return res.status(200).json({
         session_id: updated.session_id,
+        user_id: updated.user_id,
         data
       });
   
@@ -138,49 +139,55 @@ const addLinkDocument = async (req, res) => {
   };
   
   // ✅ Get by session ID
-  const getLinkDocument = async (req, res) => {
+  const getLinkDocsByID = async (req, res) => {
     try {
       const { session_id } = req.params;
-      const result = await getLinkDocumentBySessionId(session_id);
+      const result = await getLinkDocumentsBySessionId(session_id);
   
       if (!result) {
         return res.status(404).json({ message: 'Link document not found' });
       }
   
-      return res.status(200).json(result);
+      return res.status(200).json({
+        ...result,
+        user_id: result.user_id // ✅ Confirm it's present (likely already)
+      });
+      
     } catch (err) {
       console.error('getLinkDocument error:', err);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   };
   
-  // ✅ Get all by email/user_id
-  const resumeLinkSessionsByEmail = async (req, res) => {
-    const { email } = req.query;
-    if (!email) return res.status(400).json({ error: 'Query param "email" is required' });
-  
-    try {
-      const sessions = await getLinkDocumentsByUserId(email);
-      if (!sessions.length) return res.status(404).json({ error: 'No link sessions found for this email' });
-  
-      const result = sessions.map(session => {
-        const current_page = getCurrentLinkPageName(session);
-        const data = filterLinkDocFieldsUpToPage(session, current_page);
-  
-        return {
-          session_id: session.session_id,
-          selectDeedType: session.selectDeedType,
-          current_page,
-          data
-        };
-      });
-  
-      return res.status(200).json(result);
-    } catch (err) {
-      console.error('resumeLinkSessionsByEmail error:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-  };
+  // ✅ Get all by user_id (instead of email)
+const getLinkDocsByUserId = async (req, res) => {
+  const { user_id } = req.query;
+  if (!user_id) return res.status(400).json({ error: 'Query param "user_id" is required' });
+
+  try {
+    const sessions = await getLinkDocumentsByUserId(user_id);
+    if (!sessions.length) return res.status(404).json({ error: 'No link sessions found for this user' });
+
+    const result = sessions.map(session => {
+      const current_page = getCurrentLinkPageName(session);
+      const data = filterLinkDocFieldsUpToPage(session, current_page);
+
+      return {
+        session_id: session.session_id,
+        user_id: session.user_id, 
+        selectDeedType: session.selectDeedType,
+        current_page,
+        data
+      };
+    });
+
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error('getLinkDocumentsByUserId error:', err);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
   const getLinkDocsByName = async (req, res) => {
     const { name } = req.query;
@@ -199,6 +206,7 @@ const addLinkDocument = async (req, res) => {
   
         return {
           session_id: doc.session_id,
+          user_id: doc.user_id,
           selectDeedType: doc.selectDeedType,
           current_page,
           data
@@ -216,8 +224,8 @@ const addLinkDocument = async (req, res) => {
   
   module.exports = {
     addLinkDocument,
-    getLinkDocument,
-    resumeLinkSessionsByEmail,
+    getLinkDocsByID,
+    getLinkDocsByUserId,
     getLinkDocsByName
   };
   

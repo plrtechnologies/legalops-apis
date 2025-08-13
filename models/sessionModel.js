@@ -175,7 +175,7 @@ const createOrUpdateSession = async (data) => {
     return result.rows[0];
 };
 
-const getSessionById = async (session_id) => {
+const getSessionsBySessionId = async (session_id) => {
     const sql = `SELECT * FROM sessions WHERE session_id = $1;`;
     const result = await pool.query(sql, [session_id]);
     return result.rows[0] || null;
@@ -191,18 +191,17 @@ const getSessionsByName = async (name) => {
   
 
   const getSessionsByUserId = async (user_id) => {
-    const sql = `
-      SELECT * FROM sessions 
-      WHERE user_id = $1;
-    `;
-    const result = await pool.query(sql, [user_id]);
-    return result.rows; // returns an array of sessions
+    const result = await pool.query(
+      'SELECT * FROM sessions WHERE user_id = $1',
+      [user_id]
+    );
+    return result.rows;
   };
   
 
 module.exports = {
     createOrUpdateSession,
-    getSessionById,
+    getSessionsBySessionId,
     getSessionsByName,
     getSessionsByUserId 
 

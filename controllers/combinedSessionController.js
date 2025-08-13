@@ -3,12 +3,12 @@ const { getLinkDocumentsByUserId } = require('../models/linkdocModel');
 const { getCurrentPageName } = require('../utils/sessionHelpers');
 const { getCurrentLinkPageName, normalizeDeedType, linkPageFieldMap } = require('../utils/linkDocHelpers');
 
-const resumeFullSessionByEmail = async (req, res) => {
-  const { email } = req.params;
+const resumeFullSessionByUserId = async (req, res) => {
+  const user_id = req.params.user_id;
 
   try {
-    const sessions = await getSessionsByUserId(email);
-    const linkDocuments = await getLinkDocumentsByUserId(email);
+    const sessions = await getSessionsByUserId(user_id);
+    const linkDocuments = await getLinkDocumentsByUserId(user_id);
 
     // Step 1: Clean and group link documents by session_id
     const cleanedLinkDocumentsMap = {};
@@ -43,6 +43,7 @@ const resumeFullSessionByEmail = async (req, res) => {
 
       const cleaned = {
         session_id: linkDoc.session_id,
+        user_id: linkDoc.user_id, // ✅ Fix: Include user_id here
         current_page,
         ...filtered
       };
@@ -63,20 +64,22 @@ const resumeFullSessionByEmail = async (req, res) => {
       return {
         session_id: sessionId,
         current_page,
+        user_id: session.user_id, // Optional: Only if needed at session level
         ...session,
-        link_documents: relatedLinkDocs || null // << here is the change
+        link_documents: relatedLinkDocs || null
       };
     });
 
     res.status(200).json({
       sessions: cleanedSessions
     });
+
   } catch (error) {
-    console.error('Error in resumeFullSessionByEmail:', error);
+    console.error('Error in resumeFullSessionByUserId:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
 module.exports = {
-  resumeFullSessionByEmail
+  resumeFullSessionByUserId
 };
