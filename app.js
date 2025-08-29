@@ -10,8 +10,7 @@ const cors = require('cors');
 const multer = require('multer');
 const authenticate = require('./middleware/authenticate');
 
-const frontendRoutes = require('./routes/frontendRoutes');
-const backendRoutes = require('./routes/backendRoutes');
+const authRoutes = require('./routes/authRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
 const linkdocRoutes = require('./routes/linkdocRoutes');
 const combinedRoutes = require('./routes/combinedRoutes');
@@ -36,8 +35,7 @@ app.use(session({
 }));
 
 // Public routes: frontend and backend signup/login (no auth)
-app.use('/api/frontend', frontendRoutes);
-app.use('/api/backend', backendRoutes);
+app.use('/api/auth', authRoutes);
 
 // Protected routes (require authentication)
 app.use('/api/session', authenticate, sessionRoutes);
