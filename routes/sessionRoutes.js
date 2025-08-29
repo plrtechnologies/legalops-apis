@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const sessionController = require('../controllers/sessionController');
 const authenticate = require('../middleware/authenticate');
-const requireRole = require('../middleware/requireRole');
 
-// ✅ Apply backend protection to all routes in this file
-router.use(authenticate, requireRole('backend'));
+// ✅ Apply only authentication to all routes
+router.use(authenticate);
 
 router.post('/create-session', sessionController.createSession);
 router.get('/user_id', sessionController.getSessionByUserId);
