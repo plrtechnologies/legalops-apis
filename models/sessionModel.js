@@ -2,13 +2,11 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false // ✅ This accepts self-signed SSL certs
-  }
-});
-
-module.exports = pool;
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,  // Bypass cert validation for self-signed certs
+    },
+  });
 
 const createOrUpdateSession = async (data) => {
     // Convert to boolean safely
@@ -30,9 +28,7 @@ const createOrUpdateSession = async (data) => {
 
     // Destructure AFTER modifying the data object
     let {
-        session_id,
-    
-
+        session_id, user_id,
         // Loan Proposer
         loanProposerName, loanProposerRelationType, loanProposerRelativeName,
         loanProposerResidenceType, loanProposerDoorNumber, loanProposerStreetName,
@@ -66,7 +62,7 @@ const createOrUpdateSession = async (data) => {
 
     const sql = `
         INSERT INTO sessions (
-            session_id,
+            "session_id", "user_id",
 
             "loanProposerName", "loanProposerRelationType", "loanProposerRelativeName", "loanProposerResidenceType",
             "loanProposerDoorNumber", "loanProposerStreetName", "loanProposerCityName", "loanProposerMandalName",
@@ -91,9 +87,12 @@ const createOrUpdateSession = async (data) => {
             $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
             $23, $24, $25, $26, $27, $28, $29,
             $30, $31, $32, $33, $34, $35, $36, $37, $38, $39,
-            $40, $41, $42, $43, $44, $45, $46, $47, $48, $49
+            $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $50
         )
         ON CONFLICT (session_id) DO UPDATE SET
+          
+            "user_id" = EXCLUDED."user_id",
+
             "loanProposerName" = EXCLUDED."loanProposerName",
             "loanProposerRelationType" = EXCLUDED."loanProposerRelationType",
             "loanProposerRelativeName" = EXCLUDED."loanProposerRelativeName",
@@ -146,13 +145,14 @@ const createOrUpdateSession = async (data) => {
             "subRegistrarOfficeMandal" = EXCLUDED."subRegistrarOfficeMandal",
             "subRegistrarOfficeDistrict" = EXCLUDED."subRegistrarOfficeDistrict",
             "subRegistrarOfficeLocalAuthority" = EXCLUDED."subRegistrarOfficeLocalAuthority"
+    
         
 
         RETURNING *;
     `;
 
     const values = [
-        session_id,
+        session_id, user_id,
         loanProposerName, loanProposerRelationType, loanProposerRelativeName, loanProposerResidenceType,
         loanProposerDoorNumber, loanProposerStreetName, loanProposerCityName, loanProposerMandalName,
         loanProposerDistrictName, loanProposerPincode, isTitleHolderSameAsLoanProposer,
@@ -179,9 +179,31 @@ const getSessionById = async (session_id) => {
     const sql = `SELECT * FROM sessions WHERE session_id = $1;`;
     const result = await pool.query(sql, [session_id]);
     return result.rows[0] || null;
+
 };
+
+
+const getSessionsByName = async (name) => {
+    const sql = `SELECT * FROM sessions WHERE "loanProposerName" = $1;`;
+    const result = await pool.query(sql, [name]);
+    return result.rows; // return all matching rows as an array
+  };
+  
+
+  const getSessionsByUserId = async (user_id) => {
+    const sql = `
+      SELECT * FROM sessions 
+      WHERE user_id = $1;
+    `;
+    const result = await pool.query(sql, [user_id]);
+    return result.rows; // returns an array of sessions
+  };
+  
 
 module.exports = {
     createOrUpdateSession,
     getSessionById,
+    getSessionsByName,
+    getSessionsByUserId 
+
 };

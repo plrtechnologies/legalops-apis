@@ -16,6 +16,7 @@ const authRoutes = require('./routes/authRoutes');
 const authenticate = require('./middleware/authenticate');  // JWT Authentication Middleware
 const sessionRoutes = require('./routes/sessionRoutes');
 const linkdocRoutes = require('./routes/linkdocRoutes');
+const combinedRoutes = require('./routes/combinedRoutes');
 const app = express();
 const port = 3000;
 
@@ -38,15 +39,17 @@ app.use(session({
     }
 }));
 
-app.use('/api', docxtemplatorRoutes); // Prefix all routes with /api
-//app.use('/api', finaldocRoutes);
-
 app.use('/api', authRoutes);  // Login/Register routes (to get JWT)
 app.use('/api', authenticate);  // JWT authentication middleware for the routes below
 app.use('/api', sessionRoutes);
 app.use('/api', linkdocRoutes);
+app.use('/api', combinedRoutes);
+app.use('/api', docxtemplatorRoutes); // Prefix all routes with /api
+//app.use('/api', finaldocRoutes);
 
-
+// Serve Swagger UI (reads the generated swagger.json)
+const swaggerDocument = require('./swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Error handling middleware
 app.use((req, res, next) => {
@@ -62,4 +65,5 @@ app.use((err, req, res, next) => {
 // Start the server
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
+    console.log(`📄 Swagger UI available at http://localhost:${port}/api-docs`);
 });

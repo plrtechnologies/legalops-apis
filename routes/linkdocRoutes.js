@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const linkdocController = require('../controllers/linkdocController');
 
-// Controller
-const linkDocumentController = require('../controllers/linkdocController');
+router.post('/linkdoc/session', linkdocController.addLinkDocument);
+router.get('/linkdoc/resume-by-email', linkdocController.resumeLinkSessionsByEmail);
+router.get('/linkdoc/search-by-loanproposer', linkdocController.getLinkDocsByName);
+router.get('/linkdoc/:session_id', linkdocController.getLinkDocument);
 
-// Routes
-router.post('/link_documents', linkDocumentController.addlinkDocument);
-router.get('/link_documents/:session_id', linkDocumentController.getlinkDocument);
+
+
+
+
 
 module.exports = router;

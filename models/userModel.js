@@ -6,12 +6,9 @@ require('dotenv').config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false // ✅ This accepts self-signed SSL certs
-  }
+    rejectUnauthorized: false,  // Bypass cert validation for self-signed certs
+  },
 });
-
-module.exports = pool;
-
 
 const User = {
   // Check if a user already exists by email
