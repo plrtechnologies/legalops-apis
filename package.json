@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "swagger-autogen": "node swagger.js",
+    "start": "node swagger.js && node app.js",
+    "dev": "node swagger.js && nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "docx-pdf": "^0.0.1",
     "docxtemplater": "^3.60.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -23,17 +25,16 @@
     "google-auth-library": "^9.15.1",
     "googleapis": "^148.0.0",
     "jsonwebtoken": "^9.0.2",
-
     "mammoth": "^1.9.0",
     "multer": "^1.4.5-lts.1",
-    "pg": "^8.14.1",
+    "pg": "^8.16.3",
     "pizzip": "^3.1.8",
-
     "plrproject": "file:",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "swagger-autogen": "^2.23.7"
   }
 }
