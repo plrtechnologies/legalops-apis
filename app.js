@@ -1,6 +1,6 @@
 const express = require('express');
-const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger-output.json'); // generated file
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const fs = require('fs');
@@ -14,6 +14,8 @@ const authRoutes = require('./routes/authRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
 const linkdocRoutes = require('./routes/linkdocRoutes');
 const combinedRoutes = require('./routes/combinedRoutes');
+const finalDocumentsRoutes = require('./routes/finalDocumentsRoutes');//blob doc(finaldoc)
+const docxtemplatorRoutes = require('./routes/DocxtemplatorRoutes'); // Ensure correct path
 
 const app = express();
 const port = 3000;
@@ -34,6 +36,11 @@ app.use(session({
   }
 }));
 
+
+// Swagger docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+
 // Public routes: frontend and backend signup/login (no auth)
 app.use('/api/auth', authRoutes);
 
@@ -41,6 +48,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/session', authenticate, sessionRoutes);
 app.use('/api/linkdoc', authenticate, linkdocRoutes);
 app.use('/api/combined', authenticate, combinedRoutes);
+app.use('/api/finaldoc', finalDocumentsRoutes);//blob final doc
+app.use('/api', docxtemplatorRoutes); // Prefix all routes with /api
+
 
 // 404 handler
 app.use((req, res, next) => {
@@ -56,4 +66,8 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
+   console.log(`📄 Swagger UI available at http://localhost:${port}/api-docs`);
+  console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
 });
+
+module.exports = app;
