@@ -2,10 +2,11 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
-});
-
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,  // Bypass cert validation for self-signed certs
+    },
+  });
 
 // Upload document
 exports.uploadDocument = async (session_id, user_id, name, loanProposerName, file) => {
