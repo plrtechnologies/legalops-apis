@@ -81,13 +81,14 @@ const createOrUpdateSession = async (data) => {
             "southBoundaryType", "southBoundaryExtent", "southBoundaryOwner",
 
             "selectDeedType", "dateOfRegistration", "documentNumber", "nameOfSubRegistrarOffice",
-            "locationOfSubRegistrarOffice", "subRegistrarOfficeMandal", "subRegistrarOfficeDistrict", "subRegistrarOfficeLocalAuthority"
+            "locationOfSubRegistrarOffice", "subRegistrarOfficeMandal", "subRegistrarOfficeDistrict", "subRegistrarOfficeLocalAuthority",
+            "created_at"
         ) VALUES (
             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12,
             $13, $14, $15, $16, $17, $18, $19, $20, $21, $22,
             $23, $24, $25, $26, $27, $28, $29,
             $30, $31, $32, $33, $34, $35, $36, $37, $38, $39,
-            $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $50
+            $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $50, NOW()
         )
         ON CONFLICT (session_id) DO UPDATE SET
           
@@ -174,12 +175,16 @@ const createOrUpdateSession = async (data) => {
     const result = await pool.query(sql, values);
     return result.rows[0];
 };
-
+// ✅ Fetch single session by session_id
 const getSessionsBySessionId = async (session_id) => {
-    const sql = `SELECT * FROM sessions WHERE session_id = $1;`;
-    const result = await pool.query(sql, [session_id]);
-    return result.rows[0] || null;
-
+  const sql = `
+    SELECT s.*, u.name AS user_name
+    FROM sessions s
+    LEFT JOIN users u ON s.user_id = u.user_id
+    WHERE s.session_id = $1;
+  `;
+  const result = await pool.query(sql, [session_id]);
+  return result.rows[0] || null;
 };
 
 
@@ -190,13 +195,18 @@ const getSessionsByName = async (name) => {
   };
   
 
-  const getSessionsByUserId = async (user_id) => {
-    const result = await pool.query(
-      'SELECT * FROM sessions WHERE user_id = $1',
-      [user_id]
-    );
-    return result.rows;
-  };
+ // ✅ Fetch sessions by user_id (with user name joined)
+const getSessionsByUserId = async (user_id) => {
+  const sql = `
+    SELECT s.*, u.name AS user_name
+    FROM sessions s
+    LEFT JOIN users u ON s.user_id = u.user_id
+    WHERE s.user_id = $1
+    ORDER BY s.created_at DESC;
+  `;
+  const result = await pool.query(sql, [user_id]);
+  return result.rows;
+};
   
 
 module.exports = {
