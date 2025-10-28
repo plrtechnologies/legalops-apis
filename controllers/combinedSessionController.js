@@ -5,7 +5,7 @@ const { getCurrentLinkPageName, normalizeDeedType, linkPageFieldMap } = require(
 
 /**
  * Resume full session by user ID
- * - Fetches session data (with user name from users table)
+ * - Fetches session data (with loan proposer name instead of user_name)
  * - Fetches linked documents
  * - Groups and cleans both for frontend consumption
  */
@@ -13,7 +13,7 @@ const resumeFullSessionByUserId = async (req, res) => {
   const user_id = req.params.user_id;
 
   try {
-    // ✅ Step 1: Fetch sessions (with user_name via JOIN)
+    // ✅ Step 1: Fetch sessions (no user_name join)
     const sessions = await getSessionsByUserId(user_id);
 
     if (!sessions || sessions.length === 0) {
@@ -77,7 +77,7 @@ const resumeFullSessionByUserId = async (req, res) => {
       return {
         session_id: sessionId,
         user_id: session.user_id,
-        user_name: session.user_name, // ✅ Include username from users table
+        name: session.loanProposerName || null, // ✅ Use loan proposer’s name for frontend display
         current_page,
         ...session,
         link_documents: relatedLinkDocs || []
@@ -87,7 +87,7 @@ const resumeFullSessionByUserId = async (req, res) => {
     // ✅ Step 5: Send structured response
     res.status(200).json({
       user_id,
-      user_name: sessions[0].user_name || null,
+      name: sessions[0].loanProposerName || null, // ✅ Show loan proposer’s name here too
       total_sessions: cleanedSessions.length,
       sessions: cleanedSessions
     });
