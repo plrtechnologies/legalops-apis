@@ -195,19 +195,18 @@ const getSessionsByName = async (name) => {
   };
   
 
- // ✅ Fetch sessions by user_id (with user name joined)
+ // ✅ Fetch sessions by user_id (no user_name join)
 const getSessionsByUserId = async (user_id) => {
   const sql = `
-    SELECT s.*, u.name AS user_name
-    FROM sessions s
-    LEFT JOIN users u ON s.user_id = u.user_id
-    WHERE s.user_id = $1
-    ORDER BY s.created_at DESC;
+    SELECT *
+    FROM sessions
+    WHERE user_id = $1
+    ORDER BY created_at DESC;
   `;
   const result = await pool.query(sql, [user_id]);
   return result.rows;
 };
-  
+ 
 
 module.exports = {
     createOrUpdateSession,
