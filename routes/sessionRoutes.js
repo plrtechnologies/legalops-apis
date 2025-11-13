@@ -17,7 +17,7 @@ router.post(
 
 // GET by user_id
 router.get(
-  '/user_id',
+  '/user/:user_id',
   sessionController.getSessionByUserId
   /* #swagger.tags = ['Session']
      #swagger.summary = 'Get session by user ID'
@@ -39,7 +39,7 @@ router.get(
 
 // GET by session_id
 router.get(
-  '/session_id',
+  '/id/:session_id',
   sessionController.getSessionByID
   /* #swagger.tags = ['Session']
      #swagger.summary = 'Get session by session ID'

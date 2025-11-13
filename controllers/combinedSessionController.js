@@ -5,28 +5,25 @@ const { getCurrentLinkPageName, normalizeDeedType, linkPageFieldMap } = require(
 
 /**
  * Resume full session by user ID
- * - Fetches session data (with loan proposer name instead of user_name)
+ * - Fetches session data (loan proposer name instead of user_name)
  * - Fetches linked documents
- * - Groups and cleans both for frontend consumption
+ * - Groups and merges both for frontend
  */
 const resumeFullSessionByUserId = async (req, res) => {
-  const user_id = req.params.user_id;
+  const { user_id } = req.params;
 
   try {
-    // ✅ Step 1: Fetch sessions (no user_name join)
+    // ✅ Step 1: Fetch sessions
     const sessions = await getSessionsByUserId(user_id);
-
     if (!sessions || sessions.length === 0) {
       return res.status(404).json({ message: 'No sessions found for this user' });
     }
 
-    // ✅ Step 2: Fetch linked documents
-    const linkDocuments = await getLinkDocumentsByUserId(user_id);
+    // ✅ Step 2: Fetch link documents
+    const linkDocuments = (await getLinkDocumentsByUserId(user_id)) || [];
 
-    // ✅ Step 3: Group and clean link documents
-    const cleanedLinkDocumentsMap = {};
-
-    linkDocuments.forEach(linkDoc => {
+    // ✅ Step 3: Map link documents by session_id
+    const cleanedLinkDocumentsMap = linkDocuments.reduce((acc, linkDoc) => {
       const deedType = normalizeDeedType(linkDoc.selectDeedType);
 
       const deedKeyMap = {
@@ -44,11 +41,12 @@ const resumeFullSessionByUserId = async (req, res) => {
       const deedKey = deedKeyMap[deedType];
       const relevantFields = linkPageFieldMap[deedKey] || [];
 
+      // 🧹 Filter only non-empty fields
       const filtered = { selectDeedType: linkDoc.selectDeedType };
-
       relevantFields.forEach(field => {
-        if (linkDoc[field] !== null && linkDoc[field] !== undefined && linkDoc[field] !== '') {
-          filtered[field] = linkDoc[field];
+        const value = linkDoc[field];
+        if (value !== undefined && value !== null && value !== '') {
+          filtered[field] = value;
         }
       });
 
@@ -61,33 +59,32 @@ const resumeFullSessionByUserId = async (req, res) => {
         ...filtered
       };
 
-      if (!cleanedLinkDocumentsMap[linkDoc.session_id]) {
-        cleanedLinkDocumentsMap[linkDoc.session_id] = [];
-      }
+      // Group by session_id
+      if (!acc[linkDoc.session_id]) acc[linkDoc.session_id] = [];
+      acc[linkDoc.session_id].push(cleaned);
 
-      cleanedLinkDocumentsMap[linkDoc.session_id].push(cleaned);
-    });
+      return acc;
+    }, {});
 
     // ✅ Step 4: Attach link docs to sessions
     const cleanedSessions = sessions.map(session => {
       const current_page = getCurrentPageName(session);
-      const sessionId = session.session_id;
-      const relatedLinkDocs = cleanedLinkDocumentsMap[sessionId];
+      const relatedLinkDocs = cleanedLinkDocumentsMap[session.session_id] || [];
 
       return {
-        session_id: sessionId,
+        session_id: session.session_id,
         user_id: session.user_id,
-        name: session.loanProposerName || null, // ✅ Use loan proposer’s name for frontend display
+        loanProposerName: session.loanProposerName || null, // clear naming
         current_page,
         ...session,
-        link_documents: relatedLinkDocs || []
+        link_documents: relatedLinkDocs
       };
     });
 
     // ✅ Step 5: Send structured response
     res.status(200).json({
       user_id,
-      name: sessions[0].loanProposerName || null, // ✅ Show loan proposer’s name here too
+      loanProposerName: sessions[0].loanProposerName || null,
       total_sessions: cleanedSessions.length,
       sessions: cleanedSessions
     });

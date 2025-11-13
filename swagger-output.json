@@ -185,7 +185,7 @@
         ]
       }
     },
-    "/api/session/user_id": {
+    "/api/session/user/{user_id}": {
       "get": {
         "tags": [
           "Session"
@@ -196,8 +196,8 @@
           {
             "name": "user_id",
             "in": "query",
-            "type": "string",
-            "required": true
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -269,13 +269,21 @@
         ]
       }
     },
-    "/api/session/session_id": {
+    "/api/session/id/{session_id}": {
       "get": {
         "tags": [
           "Session"
         ],
         "summary": "Get session by session ID",
         "description": "",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -303,7 +311,7 @@
         ]
       }
     },
-    "/api/linkdoc/create-linkdoc": {
+    "/api/linkdoc/create": {
       "post": {
         "tags": [
           "LinkDoc"
@@ -348,7 +356,7 @@
         ]
       }
     },
-    "/api/linkdoc/doc-user_id": {
+    "/api/linkdoc/user/{user_id}": {
       "get": {
         "tags": [
           "LinkDoc"
@@ -359,8 +367,8 @@
           {
             "name": "user_id",
             "in": "query",
-            "type": "string",
-            "required": true
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -390,7 +398,7 @@
         ]
       }
     },
-    "/api/linkdoc/doc-loanproposername": {
+    "/api/linkdoc/loanproposername": {
       "get": {
         "tags": [
           "LinkDoc"
@@ -432,13 +440,21 @@
         ]
       }
     },
-    "/api/linkdoc/doc-session_id": {
+    "/api/linkdoc/session/{session_id}": {
       "get": {
         "tags": [
           "LinkDoc"
         ],
         "summary": "Get link documents by session ID",
         "description": "",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -487,6 +503,9 @@
           },
           "403": {
             "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"

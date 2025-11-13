@@ -161,7 +161,8 @@ const addLinkDocument = async (req, res) => {
   
   // ✅ Get all by user_id (instead of email)
 const getLinkDocsByUserId = async (req, res) => {
-  const { user_id } = req.query;
+  const { user_id } = req.params;
+
   if (!user_id) return res.status(400).json({ error: 'Query param "user_id" is required' });
 
   try {

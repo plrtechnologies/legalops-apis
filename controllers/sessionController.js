@@ -7,32 +7,41 @@ const {
 
 // Map of logical page names to their fields
 const pageFieldMap = {
-  loanProposerDetails: ['loanProposerName', 'loanProposerRelationType', 'loanProposerRelativeName', 'loanProposerResidenceType',
-      'loanProposerDoorNumber', 'loanProposerStreetName', 'loanProposerCityName', 'loanProposerMandalName',
-      'loanProposerDistrictName', 'loanProposerPincode', 'isTitleHolderSameAsLoanProposer'],
-  titleHolderDetails: ['titleHolderName', 'titleHolderRelationType', 'titleHolderRelativeName',
-      'titleHolderResidenceType', 'titleHolderDoorNumber', 'titleHolderStreetName',
-      'titleHolderCityName', 'titleHolderMandalName', 'titleHolderDistrictName', 'titleHolderPincode'],
-  propertyDetails: ['propertyDoorNumber', 'nearbyDoor', 'propertyAssessmentNumber', 'propertySurveyNumber',
-      'extentOfProperty', 'propertyType', 'propertyNature'],
-  propertyBoundaries: ['eastBoundaryType', 'eastBoundaryExtent', 'eastBoundaryOwner',
-      'westBoundaryType', 'westBoundaryExtent', 'westBoundaryOwner',
-      'northBoundaryType', 'northBoundaryExtent', 'northBoundaryOwner',
-      'southBoundaryType', 'southBoundaryExtent', 'southBoundaryOwner'],
-  mostRecentDocuments: ['selectDeedType', 'dateOfRegistration', 'documentNumber', 'nameOfSubRegistrarOffice',
-      'locationOfSubRegistrarOffice', 'subRegistrarOfficeMandal', 'subRegistrarOfficeDistrict', 'subRegistrarOfficeLocalAuthority']
+  loanProposerDetails: [
+    'loanProposerName', 'loanProposerRelationType', 'loanProposerRelativeName',
+    'loanProposerResidenceType', 'loanProposerDoorNumber', 'loanProposerStreetName',
+    'loanProposerCityName', 'loanProposerMandalName', 'loanProposerDistrictName',
+    'loanProposerPincode', 'isTitleHolderSameAsLoanProposer'
+  ],
+  titleHolderDetails: [
+    'titleHolderName', 'titleHolderRelationType', 'titleHolderRelativeName',
+    'titleHolderResidenceType', 'titleHolderDoorNumber', 'titleHolderStreetName',
+    'titleHolderCityName', 'titleHolderMandalName', 'titleHolderDistrictName', 'titleHolderPincode'
+  ],
+  propertyDetails: [
+    'propertyDoorNumber', 'nearbyDoor', 'propertyAssessmentNumber', 'propertySurveyNumber',
+    'extentOfProperty', 'propertyType', 'propertyNature'
+  ],
+  propertyBoundaries: [
+    'eastBoundaryType', 'eastBoundaryExtent', 'eastBoundaryOwner',
+    'westBoundaryType', 'westBoundaryExtent', 'westBoundaryOwner',
+    'northBoundaryType', 'northBoundaryExtent', 'northBoundaryOwner',
+    'southBoundaryType', 'southBoundaryExtent', 'southBoundaryOwner'
+  ],
+  mostRecentDocuments: [
+    'selectDeedType', 'dateOfRegistration', 'documentNumber', 'nameOfSubRegistrarOffice',
+    'locationOfSubRegistrarOffice', 'subRegistrarOfficeMandal', 'subRegistrarOfficeDistrict',
+    'subRegistrarOfficeLocalAuthority'
+  ]
 };
 
-// Determine current page based on missing or empty fields
+// Determine current page based on missing fields
 const getCurrentPageName = (sessionData) => {
   for (const [pageName, fields] of Object.entries(pageFieldMap)) {
-    // ⛔ Skip title holder page if not applicable
     if (
       pageName === 'titleHolderDetails' &&
       String(sessionData.isTitleHolderSameAsLoanProposer).toLowerCase() === 'true'
-    ) {
-      continue; // Skip this page
-    }
+    ) continue;
 
     const allFilled = fields.every((field) => {
       const value = sessionData[field];
@@ -41,20 +50,17 @@ const getCurrentPageName = (sessionData) => {
 
     if (!allFilled) return pageName;
   }
-
   return 'complete';
 };
 
-// Filter session fields up to (but not including) current page
+// Filter only filled fields
 const filterAllFilledFields = (session) => {
   const filtered = {};
   for (const [pageName, fields] of Object.entries(pageFieldMap)) {
     if (
       pageName === 'titleHolderDetails' &&
       String(session.isTitleHolderSameAsLoanProposer).toLowerCase() === 'true'
-    ) {
-      continue;
-    }
+    ) continue;
 
     fields.forEach((field) => {
       const value = session[field];
@@ -66,33 +72,30 @@ const filterAllFilledFields = (session) => {
   return filtered;
 };
 
-// CREATE DOCUMENT (full submission) - returns current_page + all data
+// ✅ CREATE OR UPDATE SESSION
 const createSession = async (req, res) => {
   try {
-    // Don't allow client to send current_page — remove if present
     if ('current_page' in req.body) delete req.body.current_page;
 
     const result = await createOrUpdateSession(req.body);
     const updatedSession = await getSessionsBySessionId(result.session_id);
 
-
     const current_page = getCurrentPageName(updatedSession);
     const data = filterAllFilledFields(updatedSession);
-    
 
     return res.status(200).json({
-      message: 'Document created',
+      message: 'Session created or updated successfully',
       session_id: updatedSession.session_id,
-      data: updatedSession,
+      current_page,
+      data
     });
   } catch (err) {
-    console.error('createDocument error:', err);
+    console.error('createSession error:', err);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-
-// RESUME session (GET by loanproposername) - returns current_page + filtered data only
+// ✅ GET BY LOAN PROPOSER NAME
 const getSessionByName = async (req, res) => {
   const { name } = req.query;
 
@@ -102,61 +105,55 @@ const getSessionByName = async (req, res) => {
 
   try {
     const sessions = await getSessionsByName(name);
-
     if (!sessions || sessions.length === 0) {
       return res.status(404).json({ error: 'Session not found for this username' });
     }
 
-    const session = sessions[0]; // return first match
-
+    const session = sessions[0];
     const current_page = getCurrentPageName(session);
-const data = filterAllFilledFields(session);
-
+    const data = filterAllFilledFields(session);
 
     return res.status(200).json({
       session_id: session.session_id,
       current_page,
-      data,
+      data
     });
   } catch (err) {
-    console.error('resumeSession error:', err);
+    console.error('getSessionByName error:', err);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-// GET session by session_id - returns full session object (no filtering)
+// ✅ GET BY SESSION ID
 const getSessionByID = async (req, res) => {
   try {
     const { session_id } = req.params;
-
     if (!session_id) {
       return res.status(400).json({ error: 'Session ID is required' });
     }
 
     const session = await getSessionsBySessionId(session_id);
-
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
 
     return res.status(200).json({ data: session });
   } catch (error) {
-    console.error('getSession error:', error.message);
+    console.error('getSessionByID error:', error.message);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-//GET session by user_id
+// ✅ GET BY USER ID
 const getSessionByUserId = async (req, res) => {
-  const { user_id } = req.query;
+  const { user_id } = req.params; // 🔥 changed from query to params
 
   if (!user_id) {
-    return res.status(400).json({ error: 'Query param "user_id" is required' });
+    return res.status(400).json({ error: 'Path param "user_id" is required' });
   }
 
   try {
     const sessions = await getSessionsByUserId(user_id);
-
     if (!sessions || sessions.length === 0) {
       return res.status(404).json({ error: 'No sessions found for this user_id' });
     }
@@ -168,17 +165,16 @@ const getSessionByUserId = async (req, res) => {
       return {
         session_id: session.session_id,
         current_page,
-        data,
+        data
       };
     });
 
     return res.status(200).json(sessionsWithPageData);
   } catch (err) {
-    console.error('resumeSessionByUserId error:', err);
+    console.error('getSessionByUserId error:', err);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 
 module.exports = {
   createSession,

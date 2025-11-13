@@ -7,7 +7,7 @@ router.use(authenticate);
 
 // POST create linkdoc
 router.post(
-  '/create-linkdoc',
+  '/create',
   linkdocController.addLinkDocument
   /* #swagger.tags = ['LinkDoc']
      #swagger.summary = 'Create a new link document'
@@ -17,7 +17,7 @@ router.post(
 
 // GET by user_id
 router.get(
-  '/doc-user_id',
+  '/user/:user_id',
   linkdocController.getLinkDocsByUserId
   /* #swagger.tags = ['LinkDoc']
      #swagger.summary = 'Get link documents by user ID'
@@ -28,7 +28,7 @@ router.get(
 
 // GET by loan proposer name
 router.get(
-  '/doc-loanproposername',
+  '/loanproposername',
   linkdocController.getLinkDocsByName
   /* #swagger.tags = ['LinkDoc']
      #swagger.summary = 'Get link documents by loan proposer name'
@@ -39,7 +39,7 @@ router.get(
 
 // GET by session_id
 router.get(
-  '/doc-session_id',
+  '/session/:session_id',
   linkdocController.getLinkDocsByID
   /* #swagger.tags = ['LinkDoc']
      #swagger.summary = 'Get link documents by session ID'
